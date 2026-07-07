@@ -37,21 +37,19 @@ const Companies = () => {
       <div className="absolute right-0 top-0 w-40 h-full bg-gradient-to-l from-[#050816] to-transparent z-10" />
 
       {/* MARQUEE */}
-      <div className="flex gap-8 whitespace-nowrap animate-[marquee_20s_linear_infinite]">
-        
-        {[...companies, ...companies].map(
-          (company, index) => (
+      <div className="overflow-hidden">
+        <div className="marquee-track flex w-max gap-8 whitespace-nowrap">
+          {[...companies, ...companies].map((company, index) => (
             <div
-              key={index}
+              key={`${company}-${index}`}
               className="glass px-10 py-5 rounded-3xl min-w-fit hover:scale-105 transition-all duration-300"
             >
-              
               <h3 className="text-2xl md:text-3xl font-black text-white/90">
                 {company}
               </h3>
             </div>
-          )
-        )}
+          ))}
+        </div>
       </div>
     </section>
   );
