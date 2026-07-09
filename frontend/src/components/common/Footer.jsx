@@ -312,7 +312,7 @@ const Footer = () => {
         <div className="flex flex-col md:flex-row items-center justify-between gap-6 pt-10">
           
           <p className="text-gray-500 text-center md:text-left">
-            © 2025 InterviewIQ. All rights reserved.
+            © 2026 InterviewIQ. All rights reserved.
           </p>
 
           <div className="flex items-center gap-4 px-5 py-3 rounded-full border border-white/10 bg-white/[0.03]">
