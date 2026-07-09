@@ -513,3 +513,42 @@ html {
     scale(0.98);
 }
 
+/* ================================================= */
+/* MOBILE TEXT WRAPPING & RESPONSIVE TWEAKS           */
+/* ================================================= */
+
+/* Make text wrap and break on small screens to avoid
+   long words or overflowing content being cut off. */
+p, span, a, li, h1, h2, h3, h4, h5, h6, button {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+  hyphens: auto;
+}
+
+/* Ensure media scales down instead of overflowing */
+img, video, iframe, svg {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Reduce size of decorative lights and large fixed heights on small viewports */
+@media (max-width: 640px) {
+  .purple-light,
+  .blue-light {
+    width: 240px;
+    height: 240px;
+  }
+
+  /* Tailwind arbitrary classes must be escaped in CSS selectors */
+  .rounded-\[42px\] { border-radius: 20px; }
+  .rounded-\[36px\] { border-radius: 16px; }
+  .rounded-\[32px\] { border-radius: 12px; }
+  .rounded-\[30px\] { border-radius: 12px; }
+
+  .max-w-\[700px\] { max-width: 95% !important; }
+  .h-\[220px\], .h-\[320px\] { height: auto !important; }
+
+  .w-\[85\%\] { width: 95% !important; }
+  .max-w-\[340px\] { max-width: 95% !important; }
+}
+
