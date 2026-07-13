@@ -94,7 +94,7 @@ const DashboardLayout = () => {
             <div>
 
               <h1 className="text-2xl font-black">
-                AI Interview
+                InterviewIQ
               </h1>
 
               <p className="text-gray-400 text-sm">
@@ -192,7 +192,7 @@ const DashboardLayout = () => {
 
       {/* MAIN */}
 
-      <main className="flex-1 overflow-x-hidden">
+      <main id="main-content" className="flex-1 overflow-x-hidden overflow-y-auto h-screen">
 
         <Outlet />
       </main>

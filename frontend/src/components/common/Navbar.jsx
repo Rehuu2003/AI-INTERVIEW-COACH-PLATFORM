@@ -2,7 +2,6 @@
 import { useState } from "react";
 
 import {
-  Link,
   NavLink,
   useLocation,
   useNavigate,
@@ -104,8 +103,17 @@ const Navbar = () => {
 
               {/* LOGO */}
 
-              <Link
-                to="/"
+              <button
+                onClick={() => {
+                  if (location.pathname === "/") {
+                    window.scrollTo({ top: 0, behavior: "smooth" });
+                  } else {
+                    navigate("/");
+                    setTimeout(() => {
+                      window.scrollTo({ top: 0, behavior: "smooth" });
+                    }, 100);
+                  }
+                }}
                 className="flex items-center gap-4"
               >
                 
@@ -125,14 +133,14 @@ const Navbar = () => {
                 <div>
                   
                   <h1 className="text-2xl font-black text-white tracking-tight">
-                    AI Interview
+                    InterviewIQ
                   </h1>
 
                   <p className="text-xs text-gray-400 mt-1">
                     Premium AI Workspace
                   </p>
                 </div>
-              </Link>
+              </button>
 
               {/* DESKTOP */}
 
@@ -238,7 +246,7 @@ const Navbar = () => {
                 <div>
 
                   <h2 className="text-xl font-black text-white">
-                    AI Interview
+                    InterviewIQ
                   </h2>
 
                   <p className="text-xs text-gray-400">

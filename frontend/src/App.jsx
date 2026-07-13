@@ -14,6 +14,8 @@ import {
 
 import CursorGlow from "./components/common/CursorGlow";
 
+import ScrollToTop from "./components/common/ScrollToTop";
+
 import FloatingParticles from "./components/common/FloatingParticles";
 
 import LoadingScreen from "./components/common/LoadingScreen";
@@ -71,6 +73,8 @@ function App() {
     <>
       
       {/* PREMIUM EFFECTS */}
+
+      <ScrollToTop />
 
       <CursorGlow />
 
