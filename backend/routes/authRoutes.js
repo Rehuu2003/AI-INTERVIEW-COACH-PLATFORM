@@ -5,6 +5,7 @@ const { validateRegistration, validateLogin } = require('../middleware/validatio
 
 const router = express.Router();
 
+const jwtSecret = process.env.JWT_SECRET || 'dev-secret-key';
 const users = [];
 
 router.post('/register', validateRegistration, async (req, res, next) => {
@@ -20,7 +21,7 @@ router.post('/register', validateRegistration, async (req, res, next) => {
     const newUser = { id: Date.now().toString(), name, email, password: hashedPassword };
     users.push(newUser);
 
-    const token = jwt.sign({ id: newUser.id, email: newUser.email, name: newUser.name }, process.env.JWT_SECRET, {
+    const token = jwt.sign({ id: newUser.id, email: newUser.email, name: newUser.name }, jwtSecret, {
       expiresIn: process.env.JWT_EXPIRES_IN || '7d',
     });
 
@@ -44,7 +45,7 @@ router.post('/login', validateLogin, async (req, res, next) => {
       return res.status(401).json({ success: false, message: 'Invalid credentials' });
     }
 
-    const token = jwt.sign({ id: user.id, email: user.email, name: user.name }, process.env.JWT_SECRET, {
+    const token = jwt.sign({ id: user.id, email: user.email, name: user.name }, jwtSecret, {
       expiresIn: process.env.JWT_EXPIRES_IN || '7d',
     });
 
