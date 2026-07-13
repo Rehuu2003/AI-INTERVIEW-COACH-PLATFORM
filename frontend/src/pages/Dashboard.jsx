@@ -1,608 +1,262 @@
 import { motion } from "framer-motion";
-
-import { defaultUser } from "../data/defaultUser";
-
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
 import {
-  Brain,
-  TrendingUp,
-  Mic,
-  BarChart3,
-  Clock3,
-  Sparkles,
-  ArrowUpRight,
-  Activity,
-  CheckCircle2,
-  PlayCircle,
+  Brain, TrendingUp, Mic, BarChart3, Clock3, Sparkles,
+  ArrowUpRight, Activity, CheckCircle2, PlayCircle,
 } from "lucide-react";
 
-const stats = [
-  {
-    title: "AI Score",
-    value: "94%",
-    icon: Brain,
-    color: "from-cyan-400 to-blue-500",
-  },
-
-  {
-    title: "Interviews",
-    value: "128",
-    icon: Mic,
-    color: "from-purple-500 to-pink-500",
-  },
-
-  {
-    title: "Growth",
-    value: "+18%",
-    icon: TrendingUp,
-    color: "from-emerald-400 to-green-500",
-  },
-
-  {
-    title: "Analytics",
-    value: "Live",
-    icon: BarChart3,
-    color: "from-orange-400 to-red-500",
-  },
-];
-
-const interviews = [
-  {
-    role: "Frontend Developer",
-    company: "Google",
-    score: "95%",
-    time: "2h ago",
-  },
-
-  {
-    role: "Backend Engineer",
-    company: "Amazon",
-    score: "91%",
-    time: "Yesterday",
-  },
-
-  {
-    role: "Full Stack Developer",
-    company: "Microsoft",
-    score: "93%",
-    time: "2 days ago",
-  },
+const recentInterviews = [
+  { role: "Frontend Developer", company: "Practice Session", score: "95%", time: "2h ago" },
+  { role: "Backend Engineer", company: "Practice Session", score: "91%", time: "Yesterday" },
+  { role: "Full Stack Developer", company: "Practice Session", score: "93%", time: "2 days ago" },
 ];
 
 const Dashboard = () => {
-  const storedUser =
-    typeof window !== "undefined"
-      ? localStorage.getItem("aiUser")
-      : null;
+  const { user } = useAuth();
+  const navigate = useNavigate();
 
-  const user = storedUser
-    ? JSON.parse(storedUser)
-    : defaultUser;
+  const displayName = user?.name || "Candidate";
+  const initial = displayName.charAt(0).toUpperCase();
+
+  const stats = [
+    { title: "AI Score", value: "94%", icon: Brain, color: "from-cyan-400 to-blue-500" },
+    { title: "Interviews", value: "0", icon: Mic, color: "from-purple-500 to-pink-500" },
+    { title: "Growth", value: "+0%", icon: TrendingUp, color: "from-emerald-400 to-green-500" },
+    { title: "Analytics", value: "Live", icon: BarChart3, color: "from-orange-400 to-red-500" },
+  ];
 
   return (
-    <div className="space-y-8">
-      
-      {/* HERO CARD */}
+    <div className="p-6 lg:p-10 space-y-8">
 
+      {/* HERO */}
       <motion.div
-        initial={{
-          opacity: 0,
-          y: 20,
-        }}
-        animate={{
-          opacity: 1,
-          y: 0,
-        }}
-        className="relative overflow-hidden rounded-[36px] border border-white/10 bg-gradient-to-br from-[#081120] via-[#0b1220] to-[#111827] p-10"
+        initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
+        className="relative overflow-hidden rounded-[32px] border border-white/10 bg-gradient-to-br from-[#081120] via-[#0b1220] to-[#111827] p-8 lg:p-10"
       >
-        
-        {/* GLOW */}
-
-        <div className="absolute top-0 right-0 w-96 h-96 bg-cyan-500/10 blur-[120px]" />
-
-        <div className="relative z-10 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-10">
-          
-          {/* LEFT */}
-
+        <div className="absolute top-0 right-0 w-96 h-96 bg-cyan-500/8 blur-[120px] pointer-events-none" />
+        <div className="relative z-10 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-8">
           <div>
-            
-            <div className="inline-flex items-center gap-3 px-4 py-2 rounded-full border border-cyan-500/20 bg-cyan-500/10 mb-8">
-              
-              <Sparkles
-                size={16}
-                className="text-cyan-400"
-              />
-
-              <span className="text-cyan-300 text-sm font-medium">
-                AI Workspace Active
-              </span>
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-cyan-500/20 bg-cyan-500/10 mb-6">
+              <Sparkles size={14} className="text-cyan-400" />
+              <span className="text-cyan-300 text-sm font-medium">AI Workspace Active</span>
             </div>
-
-            <h1 className="text-5xl font-black text-white leading-tight mb-6">
-              
-              Welcome back,
+            <h1 className="text-4xl lg:text-5xl font-bold text-white leading-tight mb-4">
+              Welcome back,{" "}
               <span className="bg-gradient-to-r from-cyan-400 to-purple-500 bg-clip-text text-transparent">
-                {" "}
-                {user.name || "Candidate"}
+                {displayName}
               </span>
             </h1>
-
-            <p className="text-xl text-gray-400 max-w-2xl leading-relaxed mb-10">
-              Your interview intelligence system is tracking
-              performance, confidence, and realtime AI insights.
+            <p className="text-gray-400 text-lg max-w-xl leading-relaxed mb-8">
+              Your AI interview coach is ready. Practice, get scored, and track your growth.
             </p>
-
-            <div className="flex flex-wrap gap-5">
-              
-              <button className="h-16 px-8 rounded-2xl bg-gradient-to-r from-cyan-400 to-purple-500 text-black font-black hover:scale-105 transition-all duration-300 shadow-[0_0_40px_rgba(34,211,238,0.25)]">
+            <div className="flex flex-wrap gap-4">
+              <button
+                onClick={() => navigate("/dashboard/interview")}
+                className="h-14 px-8 rounded-2xl bg-gradient-to-r from-cyan-400 to-purple-500 text-black font-bold hover:scale-105 transition-all"
+              >
                 Start AI Interview
               </button>
-
-              <button className="h-16 px-8 rounded-2xl border border-white/10 bg-white/[0.04] backdrop-blur-xl text-white font-semibold hover:bg-white/[0.06] transition">
+              <button
+                onClick={() => navigate("/dashboard/analytics")}
+                className="h-14 px-8 rounded-2xl border border-white/10 bg-white/[0.04] text-white font-medium hover:bg-white/[0.07] transition"
+              >
                 View Analytics
               </button>
             </div>
           </div>
 
-          {/* RIGHT */}
-
-          <div className="relative w-full max-w-[340px]">
-            
-            <div className="rounded-[32px] border border-white/10 bg-white/[0.04] backdrop-blur-2xl p-8">
-              
-              <div className="flex items-center justify-between mb-10">
-                
-                <div>
-                  
-                  <p className="text-gray-400 mb-2">
-                    Current AI Score
-                  </p>
-
-                  <h2 className="text-6xl font-black bg-gradient-to-r from-cyan-400 to-purple-500 bg-clip-text text-transparent">
-                    94%
-                  </h2>
-                </div>
-
-                <div className="w-16 h-16 rounded-2xl bg-gradient-to-r from-cyan-400 to-purple-500 flex items-center justify-center">
-                  
-                  <Brain
-                    size={30}
-                    className="text-black"
-                  />
-                </div>
+          {/* Score card */}
+          <div className="w-full max-w-[300px] rounded-[28px] border border-white/10 bg-white/[0.04] backdrop-blur-xl p-7 shrink-0">
+            <div className="flex items-center justify-between mb-8">
+              <div>
+                <p className="text-gray-400 text-sm mb-1">Current Score</p>
+                <h2 className="text-5xl font-black bg-gradient-to-r from-cyan-400 to-purple-500 bg-clip-text text-transparent">94%</h2>
               </div>
-
-              {/* MINI GRAPH */}
-
-              <div className="flex items-end gap-3 h-28">
-                
-                {[35, 50, 42, 68, 58, 80, 72].map(
-                  (height, index) => (
-                    <div
-                      key={index}
-                      className="flex-1 rounded-full bg-gradient-to-t from-cyan-400 to-purple-500"
-                      style={{
-                        height: `${height}%`,
-                      }}
-                    />
-                  )
-                )}
+              <div className="w-14 h-14 rounded-2xl bg-gradient-to-r from-cyan-400 to-purple-500 flex items-center justify-center">
+                <Brain size={26} className="text-black" />
               </div>
-
-              <div className="mt-8 flex items-center justify-between text-sm">
-                
-                <span className="text-emerald-400 font-semibold">
-                  +18% this week
-                </span>
-
-                <span className="text-gray-500">
-                  Updated live
-                </span>
-              </div>
+            </div>
+            <div className="flex items-end gap-2 h-20">
+              {[35, 50, 42, 68, 58, 80, 72].map((h, i) => (
+                <div key={i} className="flex-1 rounded-full bg-gradient-to-t from-cyan-400 to-purple-500" style={{ height: `${h}%` }} />
+              ))}
+            </div>
+            <div className="mt-5 flex items-center justify-between text-sm">
+              <span className="text-emerald-400 font-semibold">+18% this week</span>
+              <span className="text-gray-500">Updated live</span>
             </div>
           </div>
         </div>
       </motion.div>
 
       {/* STATS */}
-
-      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
-        
-        {stats.map((item, index) => {
+      <div className="grid grid-cols-2 xl:grid-cols-4 gap-5">
+        {stats.map((item, i) => {
           const Icon = item.icon;
-
           return (
             <motion.div
-              key={index}
-              initial={{
-                opacity: 0,
-                y: 20,
-              }}
-              animate={{
-                opacity: 1,
-                y: 0,
-              }}
-              transition={{
-                delay: index * 0.1,
-              }}
-              className="rounded-[30px] border border-white/10 bg-white/[0.04] backdrop-blur-2xl p-7 relative overflow-hidden"
+              key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: i * 0.08 }}
+              className="rounded-[26px] border border-white/10 bg-white/[0.03] p-6"
             >
-              
-              <div className="absolute top-0 right-0 w-32 h-32 bg-cyan-500/5 blur-[80px]" />
-
-              <div className="relative z-10">
-                
-                <div className={`w-16 h-16 rounded-2xl bg-gradient-to-r ${item.color} flex items-center justify-center mb-8`}>
-                  
-                  <Icon
-                    size={30}
-                    className="text-black"
-                  />
-                </div>
-
-                <p className="text-gray-400 mb-3">
-                  {item.title}
-                </p>
-
-                <h3 className="text-5xl font-black text-white">
-                  {item.value}
-                </h3>
+              <div className={`w-14 h-14 rounded-2xl bg-gradient-to-r ${item.color} flex items-center justify-center mb-6`}>
+                <Icon size={26} className="text-black" />
               </div>
+              <p className="text-gray-400 text-sm mb-2">{item.title}</p>
+              <h3 className="text-4xl font-black text-white">{item.value}</h3>
             </motion.div>
           );
         })}
       </div>
 
       {/* MAIN GRID */}
+      <div className="grid lg:grid-cols-[1.3fr_0.7fr] gap-8">
 
-      <div className="grid lg:grid-cols-[1.2fr_0.8fr] gap-8">
-        
-        {/* PERFORMANCE */}
-
+        {/* Performance chart */}
         <motion.div
-          initial={{
-            opacity: 0,
-            y: 20,
-          }}
-          animate={{
-            opacity: 1,
-            y: 0,
-          }}
-          className="rounded-[36px] border border-white/10 bg-gradient-to-br from-[#081120] to-[#111827] p-8"
+          initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
+          className="rounded-[32px] border border-white/10 bg-gradient-to-br from-[#081120] to-[#111827] p-8"
         >
-          
-          <div className="flex items-center justify-between mb-12">
-            
+          <div className="flex items-center justify-between mb-8">
             <div>
-              
-              <h3 className="text-3xl font-black text-white mb-2">
-                Performance Analytics
-              </h3>
-
-              <p className="text-gray-400">
-                Realtime AI performance tracking
-              </p>
+              <h3 className="text-2xl font-bold text-white mb-1">Performance Trend</h3>
+              <p className="text-gray-400 text-sm">AI interview scoring over time</p>
             </div>
-
-            <div className="px-4 py-2 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-sm font-semibold">
-              LIVE
-            </div>
+            <span className="px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs font-semibold">LIVE</span>
           </div>
-
-          {/* CHART */}
-
-          <div className="relative h-[320px] rounded-[28px] border border-white/5 bg-black/20 overflow-hidden">
-            
-            <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(34,211,238,0.12),transparent_30%)]" />
-
-            {/* LINE */}
-
-            <svg
-              viewBox="0 0 600 300"
-              className="absolute inset-0 w-full h-full"
-            >
-              <path
-                d="M0 220 C80 160 140 250 220 180 C300 110 360 230 430 140 C500 60 560 170 600 100"
-                stroke="url(#lineGradient)"
-                strokeWidth="6"
-                fill="none"
-                strokeLinecap="round"
-              />
-
+          <div className="relative h-[260px] rounded-[22px] border border-white/5 bg-black/20 overflow-hidden">
+            <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(34,211,238,0.10),transparent_30%)]" />
+            <svg viewBox="0 0 600 260" className="absolute inset-0 w-full h-full">
               <defs>
-                <linearGradient
-                  id="lineGradient"
-                  x1="0%"
-                  y1="0%"
-                  x2="100%"
-                  y2="0%"
-                >
-                  <stop
-                    offset="0%"
-                    stopColor="#22d3ee"
-                  />
-
-                  <stop
-                    offset="100%"
-                    stopColor="#a855f7"
-                  />
+                <linearGradient id="lg1" x1="0%" y1="0%" x2="100%" y2="0%">
+                  <stop offset="0%" stopColor="#22d3ee" />
+                  <stop offset="100%" stopColor="#a855f7" />
                 </linearGradient>
               </defs>
+              <path d="M0 200 C80 150 140 220 220 160 C300 100 360 210 430 130 C500 55 560 155 600 90"
+                stroke="url(#lg1)" strokeWidth="5" fill="none" strokeLinecap="round" />
             </svg>
-
-            {/* FLOATING DOTS */}
-
-            {[
-              "top-[58%] left-[12%]",
-              "top-[48%] left-[28%]",
-              "top-[38%] left-[44%]",
-              "top-[28%] left-[60%]",
-              "top-[20%] left-[78%]",
-            ].map((position, index) => (
-              <div
-                key={index}
-                className={`absolute ${position} w-5 h-5 rounded-full bg-cyan-400 shadow-[0_0_25px_rgba(34,211,238,0.8)]`}
-              />
+            {["top-[60%] left-[10%]", "top-[47%] left-[27%]", "top-[37%] left-[44%]", "top-[28%] left-[62%]", "top-[20%] left-[80%]"].map((pos, i) => (
+              <div key={i} className={`absolute ${pos} w-4 h-4 rounded-full bg-cyan-400 shadow-[0_0_20px_rgba(34,211,238,0.8)]`} />
             ))}
           </div>
         </motion.div>
 
-        {/* RIGHT SIDE */}
-
-        <div className="space-y-8">
-          
-          {/* AI INSIGHTS */}
-
+        {/* Right column */}
+        <div className="space-y-6">
           <motion.div
-            initial={{
-              opacity: 0,
-              y: 20,
-            }}
-            animate={{
-              opacity: 1,
-              y: 0,
-            }}
-            className="rounded-[36px] border border-white/10 bg-gradient-to-br from-[#081120] to-[#111827] p-8"
+            initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
+            className="rounded-[32px] border border-white/10 bg-gradient-to-br from-[#081120] to-[#111827] p-7"
           >
-            
-            <div className="flex items-center gap-4 mb-10">
-              
-              <div className="w-14 h-14 rounded-2xl bg-gradient-to-r from-purple-500 to-pink-500 flex items-center justify-center">
-                
-                <Brain
-                  size={28}
-                  className="text-white"
-                />
+            <div className="flex items-center gap-4 mb-7">
+              <div className="w-12 h-12 rounded-xl bg-gradient-to-r from-purple-500 to-pink-500 flex items-center justify-center">
+                <Brain size={24} className="text-white" />
               </div>
-
               <div>
-                
-                <h3 className="text-2xl font-black text-white">
-                  AI Insights
-                </h3>
-
-                <p className="text-gray-400">
-                  Smart interview recommendations
-                </p>
+                <h3 className="text-xl font-bold">AI Insights</h3>
+                <p className="text-gray-400 text-sm">Smart recommendations</p>
               </div>
             </div>
-
-            <div className="space-y-6">
-              
+            <div className="space-y-4">
               {[
-                "Communication clarity improved by 18%",
-                "Technical explanations are more structured",
-                "Confidence score increased in mock interviews",
-              ].map((item, index) => (
-                <div
-                  key={index}
-                  className="flex gap-4"
-                >
-                  
-                  <CheckCircle2
-                    size={22}
-                    className="text-emerald-400 mt-1"
-                  />
-
-                  <p className="text-gray-300 leading-relaxed">
-                    {item}
-                  </p>
+                "Complete your first interview to get insights",
+                "Practice daily to build confidence",
+                "Review feedback after each session",
+              ].map((item, i) => (
+                <div key={i} className="flex gap-3">
+                  <CheckCircle2 size={18} className="text-emerald-400 mt-0.5 shrink-0" />
+                  <p className="text-gray-300 text-sm leading-relaxed">{item}</p>
                 </div>
               ))}
             </div>
           </motion.div>
 
-          {/* QUICK ACTION */}
-
           <motion.div
-            initial={{
-              opacity: 0,
-              y: 20,
-            }}
-            animate={{
-              opacity: 1,
-              y: 0,
-            }}
-            className="rounded-[36px] border border-cyan-500/10 bg-gradient-to-br from-cyan-500/10 to-purple-500/10 p-8 relative overflow-hidden"
+            initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
+            className="rounded-[32px] border border-cyan-500/15 bg-gradient-to-br from-cyan-500/8 to-purple-500/8 p-7 relative overflow-hidden"
           >
-            
-            <div className="absolute top-0 right-0 w-40 h-40 bg-cyan-500/10 blur-[80px]" />
-
+            <div className="absolute top-0 right-0 w-32 h-32 bg-cyan-500/10 blur-[60px]" />
             <div className="relative z-10">
-              
-              <PlayCircle
-                size={42}
-                className="text-cyan-400 mb-8"
-              />
-
-              <h3 className="text-3xl font-black text-white mb-5">
-                Resume Practice
-              </h3>
-
-              <p className="text-gray-300 leading-relaxed mb-8">
-                Continue your latest AI mock interview session
-                and improve communication confidence.
-              </p>
-
-              <button className="w-full h-14 rounded-2xl bg-gradient-to-r from-cyan-400 to-purple-500 text-black font-black hover:scale-[1.02] transition">
-                Continue Session
+              <PlayCircle size={36} className="text-cyan-400 mb-5" />
+              <h3 className="text-xl font-bold mb-3">Ready to practice?</h3>
+              <p className="text-gray-400 text-sm leading-relaxed mb-6">Start a mock interview session and get real-time AI feedback.</p>
+              <button
+                onClick={() => navigate("/dashboard/interview")}
+                className="w-full h-12 rounded-xl bg-gradient-to-r from-cyan-400 to-purple-500 text-black font-bold hover:scale-[1.02] transition"
+              >
+                Start Now
               </button>
             </div>
           </motion.div>
         </div>
       </div>
 
-      {/* RECENT INTERVIEWS */}
-
+      {/* Recent Interviews */}
       <motion.div
-        initial={{
-          opacity: 0,
-          y: 20,
-        }}
-        animate={{
-          opacity: 1,
-          y: 0,
-        }}
-        className="rounded-[36px] border border-white/10 bg-gradient-to-br from-[#081120] to-[#111827] p-8"
+        initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
+        className="rounded-[32px] border border-white/10 bg-gradient-to-br from-[#081120] to-[#111827] p-8"
       >
-        
-        <div className="flex items-center justify-between mb-10">
-          
+        <div className="flex items-center justify-between mb-7">
           <div>
-            
-            <h3 className="text-3xl font-black text-white mb-2">
-              Recent Interviews
-            </h3>
-
-            <p className="text-gray-400">
-              Your latest AI interview sessions
-            </p>
+            <h3 className="text-2xl font-bold mb-1">Recent Sessions</h3>
+            <p className="text-gray-400 text-sm">Your latest AI interview sessions</p>
           </div>
-
-          <button className="flex items-center gap-2 text-cyan-400 font-semibold hover:gap-3 transition-all">
-            
-            View All
-
-            <ArrowUpRight size={18} />
+          <button className="flex items-center gap-2 text-cyan-400 text-sm font-medium hover:gap-3 transition-all">
+            View All <ArrowUpRight size={16} />
           </button>
         </div>
-
-        <div className="space-y-5">
-          
-          {interviews.map((item, index) => (
-            <div
-              key={index}
-              className="rounded-[24px] border border-white/5 bg-white/[0.03] p-6 flex flex-col md:flex-row md:items-center md:justify-between gap-5 hover:bg-white/[0.05] transition"
-            >
-              
-              <div className="flex items-center gap-5">
-                
-                <div className="w-16 h-16 rounded-2xl bg-gradient-to-r from-cyan-400 to-purple-500 flex items-center justify-center">
-                  
-                  <Mic
-                    size={28}
-                    className="text-black"
-                  />
+        <div className="space-y-4">
+          {recentInterviews.map((item, i) => (
+            <div key={i} className="rounded-[20px] border border-white/5 bg-white/[0.02] p-5 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 hover:bg-white/[0.04] transition">
+              <div className="flex items-center gap-4">
+                <div className="w-12 h-12 rounded-xl bg-gradient-to-r from-cyan-400 to-purple-500 flex items-center justify-center shrink-0">
+                  <Mic size={22} className="text-black" />
                 </div>
-
                 <div>
-                  
-                  <h4 className="text-2xl font-bold text-white mb-1">
-                    {item.role}
-                  </h4>
-
-                  <p className="text-gray-400">
-                    {item.company}
-                  </p>
+                  <h4 className="font-semibold">{item.role}</h4>
+                  <p className="text-gray-400 text-sm">{item.company}</p>
                 </div>
               </div>
-
-              <div className="flex items-center gap-10">
-                
+              <div className="flex items-center gap-8">
                 <div>
-                  
-                  <p className="text-gray-500 text-sm mb-1">
-                    AI Score
-                  </p>
-
-                  <h4 className="text-3xl font-black bg-gradient-to-r from-cyan-400 to-purple-500 bg-clip-text text-transparent">
-                    {item.score}
-                  </h4>
+                  <p className="text-gray-500 text-xs mb-1">Score</p>
+                  <span className="text-2xl font-black bg-gradient-to-r from-cyan-400 to-purple-500 bg-clip-text text-transparent">{item.score}</span>
                 </div>
-
-                <div className="flex items-center gap-3 text-gray-400">
-                  
-                  <Clock3 size={18} />
-
-                  {item.time}
+                <div className="flex items-center gap-2 text-gray-400 text-sm">
+                  <Clock3 size={15} /> {item.time}
                 </div>
-
-                <button className="h-12 px-6 rounded-xl border border-white/10 bg-white/[0.04] hover:bg-white/[0.06] transition font-semibold">
-                  View
-                </button>
               </div>
             </div>
           ))}
         </div>
       </motion.div>
 
-      {/* ACTIVITY */}
-
+      {/* Activity feed */}
       <motion.div
-        initial={{
-          opacity: 0,
-          y: 20,
-        }}
-        animate={{
-          opacity: 1,
-          y: 0,
-        }}
-        className="rounded-[36px] border border-white/10 bg-gradient-to-br from-[#081120] to-[#111827] p-8"
+        initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
+        className="rounded-[32px] border border-white/10 bg-gradient-to-br from-[#081120] to-[#111827] p-8"
       >
-        
-        <div className="flex items-center gap-4 mb-10">
-          
-          <div className="w-14 h-14 rounded-2xl bg-gradient-to-r from-orange-400 to-red-500 flex items-center justify-center">
-            
-            <Activity
-              size={28}
-              className="text-black"
-            />
+        <div className="flex items-center gap-4 mb-7">
+          <div className="w-12 h-12 rounded-xl bg-gradient-to-r from-orange-400 to-red-500 flex items-center justify-center">
+            <Activity size={24} className="text-black" />
           </div>
-
           <div>
-            
-            <h3 className="text-3xl font-black text-white">
-              Live Activity
-            </h3>
-
-            <p className="text-gray-400">
-              Realtime AI workspace updates
-            </p>
+            <h3 className="text-2xl font-bold">Activity</h3>
+            <p className="text-gray-400 text-sm">Your workspace updates</p>
           </div>
         </div>
-
-        <div className="space-y-6">
-          
+        <div className="space-y-4">
           {[
-            "AI completed communication analysis",
-            "New mock interview generated successfully",
-            "Confidence score improved by 6%",
-            "Technical evaluation updated in analytics",
-          ].map((item, index) => (
-            <div
-              key={index}
-              className="flex items-center gap-5 rounded-2xl border border-white/5 bg-white/[0.03] p-5"
-            >
-              
-              <div className="w-4 h-4 rounded-full bg-cyan-400 shadow-[0_0_15px_rgba(34,211,238,0.8)]" />
-
-              <p className="text-gray-300 flex-1">
-                {item}
-              </p>
-
-              <span className="text-gray-500 text-sm">
-                Just now
-              </span>
+            "Account created successfully — welcome to InterviewIQ",
+            "AI interviewer is ready for your first session",
+            "Complete an interview to unlock analytics",
+            "Explore resume analysis in the Resume tab",
+          ].map((item, i) => (
+            <div key={i} className="flex items-center gap-4 rounded-xl border border-white/5 bg-white/[0.02] p-4">
+              <div className="w-3 h-3 rounded-full bg-cyan-400 shadow-[0_0_12px_rgba(34,211,238,0.7)] shrink-0" />
+              <p className="text-gray-300 text-sm flex-1">{item}</p>
+              <span className="text-gray-500 text-xs shrink-0">Now</span>
             </div>
           ))}
         </div>

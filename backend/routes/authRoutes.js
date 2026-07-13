@@ -14,18 +14,15 @@ const signToken = (user) =>
   );
 
 // ─── Register ────────────────────────────────────────────────────────────────
-router.post(
-  '/register',
-  [
-    body('name').trim().isLength({ min: 2 }).withMessage('Name must be at least 2 characters'),
-    body('email').isEmail().normalizeEmail().withMessage('Valid email is required'),
-    body('password').isLength({ min: 6 }).withMessage('Password must be at least 6 characters'),
-  ],
+router.post('/register',
+  body('name').trim().isLength({ min: 2 }).withMessage('Name must be at least 2 characters'),
+  body('email').isEmail().normalizeEmail().withMessage('Valid email is required'),
+  body('password').isLength({ min: 6 }).withMessage('Password must be at least 6 characters'),
   async (req, res, next) => {
     try {
       const errors = validationResult(req);
       if (!errors.isEmpty()) {
-        return res.status(400).json({ success: false, errors: errors.array() });
+        return res.status(400).json({ success: false, message: errors.array()[0].msg });
       }
 
       const { name, email, password } = req.body;
@@ -50,22 +47,18 @@ router.post(
 );
 
 // ─── Login ───────────────────────────────────────────────────────────────────
-router.post(
-  '/login',
-  [
-    body('email').isEmail().normalizeEmail().withMessage('Valid email is required'),
-    body('password').notEmpty().withMessage('Password is required'),
-  ],
+router.post('/login',
+  body('email').isEmail().normalizeEmail().withMessage('Valid email is required'),
+  body('password').notEmpty().withMessage('Password is required'),
   async (req, res, next) => {
     try {
       const errors = validationResult(req);
       if (!errors.isEmpty()) {
-        return res.status(400).json({ success: false, errors: errors.array() });
+        return res.status(400).json({ success: false, message: errors.array()[0].msg });
       }
 
       const { email, password } = req.body;
 
-      // Explicitly select password (it's hidden by default)
       const user = await User.findOne({ email }).select('+password');
       if (!user || !(await user.comparePassword(password))) {
         return res.status(401).json({ success: false, message: 'Invalid email or password' });
