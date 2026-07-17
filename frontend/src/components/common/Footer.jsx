@@ -1,330 +1,72 @@
-import {
-  Brain,
-  Sparkles,
-  ArrowRight,
-  CheckCircle2,
-} from "lucide-react";
-
-import {
-  FaTwitter,
-  FaGithub,
-  FaLinkedin,
-  FaInstagram,
-} from "react-icons/fa";
-
+import { Zap, ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
+import { FaTwitter, FaGithub, FaLinkedin } from "react-icons/fa";
 
 const Footer = () => {
   return (
-    <footer className="relative overflow-hidden border-t border-white/10 bg-[#050816] px-6 pt-28 pb-10">
-      
-      {/* BACKGROUND */}
+    <footer className="bg-[#09090b] border-t border-white/[0.06] px-5 pt-20 pb-10">
+      <div className="max-w-6xl mx-auto">
 
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(34,211,238,0.08),transparent_25%),radial-gradient(circle_at_bottom_right,rgba(168,85,247,0.08),transparent_25%)]" />
-
-      {/* GRID */}
-
-      <div className="absolute inset-0 opacity-[0.03] bg-[linear-gradient(to_right,#ffffff_1px,transparent_1px),linear-gradient(to_bottom,#ffffff_1px,transparent_1px)] bg-[size:70px_70px]" />
-
-      {/* GLOW */}
-
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[700px] h-[300px] bg-cyan-500/10 blur-[160px]" />
-
-      {/* CONTENT */}
-
-      <div className="max-w-7xl mx-auto relative z-10">
-        
-        {/* TOP CTA */}
-
-        <div className="rounded-[40px] border border-white/10 bg-white/[0.04] backdrop-blur-2xl p-10 md:p-14 mb-20 overflow-hidden relative">
-          
-          {/* INNER GLOW */}
-
-          <div className="absolute -top-20 -right-20 w-72 h-72 bg-cyan-500/10 rounded-full blur-3xl" />
-
-          <div className="grid lg:grid-cols-2 gap-10 items-center relative z-10">
-            
-            {/* LEFT */}
-
+        {/* CTA banner */}
+        <div className="rounded-2xl bg-violet-600 p-8 md:p-10 mb-16 relative overflow-hidden">
+          <div className="absolute top-0 right-0 w-64 h-64 bg-white/5 rounded-full blur-3xl pointer-events-none" />
+          <div className="relative z-10 flex flex-col md:flex-row md:items-center md:justify-between gap-6">
             <div>
-              
-              <div className="inline-flex items-center gap-3 px-5 py-3 rounded-full border border-white/10 bg-white/5 mb-8">
-                
-                <Sparkles
-                  size={18}
-                  className="text-cyan-400"
-                />
-
-                <span className="text-sm text-gray-300">
-                  AI-Powered Career Growth
-                </span>
-              </div>
-
-              <h2 className="text-4xl md:text-6xl font-black leading-tight mb-6 text-white">
-                
-                Ready to ace your
-                <span className="bg-gradient-to-r from-cyan-400 to-purple-500 bg-clip-text text-transparent">
-                  {" "}
-                  next interview?
-                </span>
+              <h2 className="text-2xl md:text-3xl font-black text-white mb-2">
+                Ready to ace your next interview?
               </h2>
-
-              <p className="text-xl text-gray-400 leading-relaxed">
-                Join thousands of candidates improving interview
-                performance using advanced AI coaching.
+              <p className="text-violet-200 text-[15px]">
+                Join thousands of candidates who already use InterviewIQ.
               </p>
             </div>
+            <Link to="/signup" className="shrink-0">
+              <button className="flex items-center gap-2 h-11 px-6 rounded-xl bg-white text-violet-700 text-sm font-bold hover:bg-violet-50 transition-all">
+                Get started free <ArrowRight size={15} />
+              </button>
+            </Link>
+          </div>
+        </div>
 
-            {/* RIGHT */}
+        {/* Links */}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-10 mb-14">
+          <div className="col-span-2 md:col-span-1">
+            <Link to="/" className="flex items-center gap-2 mb-5">
+              <div className="w-7 h-7 rounded-lg bg-violet-600 flex items-center justify-center">
+                <Zap size={14} className="text-white" fill="white" />
+              </div>
+              <span className="text-sm font-semibold text-white">InterviewIQ</span>
+            </Link>
+            <p className="text-zinc-500 text-sm leading-relaxed max-w-xs">
+              AI-powered mock interviews, real-time analytics, and communication feedback for modern hiring.
+            </p>
+          </div>
 
-            <div className="flex flex-col items-start lg:items-end gap-6">
-              
-              <Link to="/signup">
-                <button className="group px-8 py-5 rounded-3xl bg-gradient-to-r from-cyan-400 to-purple-500 text-black font-black text-lg hover:scale-105 transition-all duration-300 shadow-[0_0_40px_rgba(34,211,238,0.25)] flex items-center gap-3">
-                  
-                  Get Started Free
-
-                  <ArrowRight
-                    size={20}
-                    className="group-hover:translate-x-1 transition"
-                  />
-                </button>
-              </Link>
-
-              <div className="flex flex-wrap gap-5">
-                
-                {[
-                  "Unlimited Practice",
-                  "AI Feedback",
-                  "Realtime Analytics",
-                ].map((item, index) => (
-                  <div
-                    key={index}
-                    className="flex items-center gap-2"
-                  >
-                    <CheckCircle2
-                      size={18}
-                      className="text-emerald-400"
-                    />
-
-                    <span className="text-gray-300 text-sm">
-                      {item}
-                    </span>
-                  </div>
+          {[
+            { heading: "Product", links: ["Features", "Analytics", "Pricing", "AI Feedback", "Mock Interviews"] },
+            { heading: "Company", links: ["About", "Blog", "Careers", "Contact", "Privacy Policy"] },
+            { heading: "Support", links: ["Documentation", "Community", "Status", "Changelog"] },
+          ].map((col, i) => (
+            <div key={i}>
+              <p className="text-xs font-semibold text-zinc-400 uppercase tracking-wider mb-4">{col.heading}</p>
+              <div className="space-y-3">
+                {col.links.map((l, j) => (
+                  <a key={j} href="#" className="block text-sm text-zinc-500 hover:text-zinc-200 transition-colors">{l}</a>
                 ))}
               </div>
             </div>
-          </div>
+          ))}
         </div>
 
-        {/* MAIN FOOTER */}
+        {/* Bottom bar */}
+        <div className="flex flex-col md:flex-row items-center justify-between gap-4 pt-8 border-t border-white/[0.06]">
+          <p className="text-zinc-600 text-xs">© 2026 InterviewIQ. All rights reserved.</p>
 
-        <div className="grid lg:grid-cols-5 gap-14 pb-20 border-b border-white/10">
-          
-          {/* BRAND */}
-
-          <div className="lg:col-span-2">
-            
-            <Link
-              to="/"
-              className="flex items-center gap-4 mb-8"
-            >
-              
-              <div className="w-16 h-16 rounded-3xl bg-gradient-to-r from-cyan-400 to-purple-500 flex items-center justify-center shadow-[0_0_40px_rgba(34,211,238,0.25)]">
-                
-                <Brain
-                  size={32}
-                  className="text-black"
-                />
-              </div>
-
-              <div>
-                
-                <h1 className="text-4xl font-black text-white">
-                  InterviewIQ
-                </h1>
-
-                <p className="text-gray-400 mt-1">
-                  AI Interview Platform
-                </p>
-              </div>
-            </Link>
-
-            <p className="text-gray-400 text-lg leading-relaxed max-w-lg mb-10">
-              Prepare smarter with AI-powered mock interviews,
-              realtime analytics, and advanced communication
-              feedback built for modern hiring.
-            </p>
-
-            {/* LIVE USERS */}
-
-            <div className="inline-flex items-center gap-4 px-6 py-4 rounded-2xl border border-cyan-500/20 bg-cyan-500/5">
-              
-              <div className="w-4 h-4 rounded-full bg-emerald-400 shadow-[0_0_20px_rgba(16,185,129,0.9)] animate-pulse" />
-
-              <span className="text-gray-300">
-                <span className="font-bold text-white">
-                  12,847
-                </span>{" "}
-                candidates practicing right now
-              </span>
-            </div>
-          </div>
-
-          {/* PRODUCT */}
-
-          <div>
-            
-            <h3 className="text-2xl font-black mb-8 text-white">
-              Product
-            </h3>
-
-            <div className="space-y-5">
-              
-              {[
-                "Features",
-                "Analytics",
-                "AI Feedback",
-                "Mock Interviews",
-                "Pricing",
-              ].map((item, index) => (
-                <a
-                  key={index}
-                  href="#"
-                  className="block text-gray-400 hover:text-cyan-400 transition text-lg"
-                >
-                  {item}
-                </a>
-              ))}
-            </div>
-          </div>
-
-          {/* COMPANY */}
-
-          <div>
-            
-            <h3 className="text-2xl font-black mb-8 text-white">
-              Company
-            </h3>
-
-            <div className="space-y-5">
-              
-              {[
-                "About",
-                "Careers",
-                "Blog",
-                "Contact",
-                "Privacy Policy",
-              ].map((item, index) => (
-                <a
-                  key={index}
-                  href="#"
-                  className="block text-gray-400 hover:text-cyan-400 transition text-lg"
-                >
-                  {item}
-                </a>
-              ))}
-            </div>
-          </div>
-
-          {/* CONNECT */}
-
-          <div>
-            
-            <h3 className="text-2xl font-black mb-8 text-white">
-              Connect
-            </h3>
-
-            {/* SOCIAL ICONS */}
-
-            <div className="flex flex-wrap gap-4 mb-10">
-              
-              {[
-                FaTwitter,
-                FaGithub,
-                FaLinkedin,
-                FaInstagram,
-              ].map((Icon, index) => (
-                <button
-                  key={index}
-                  className="
-                    group
-                    w-14
-                    h-14
-                    rounded-2xl
-                    border
-                    border-white/10
-                    bg-white/[0.04]
-                    flex
-                    items-center
-                    justify-center
-                    hover:bg-cyan-500/10
-                    hover:border-cyan-500/30
-                    transition-all
-                    duration-300
-                    hover:scale-110
-                  "
-                >
-                  <Icon
-                    size={20}
-                    className="
-                      text-gray-300
-                      group-hover:text-cyan-400
-                      transition-all
-                      duration-300
-                    "
-                  />
-                </button>
-              ))}
-            </div>
-
-            {/* NEWSLETTER */}
-
-            <div>
-              
-              <p className="text-gray-400 mb-5 leading-relaxed">
-                Subscribe for AI interview tips and updates.
-              </p>
-
-              <div className="flex items-center gap-3">
-                
-                <input
-                  type="email"
-                  placeholder="Enter email"
-                  autoComplete="off"
-                  className="flex-1 px-5 py-4 rounded-2xl border border-white/10 bg-white/[0.04] text-white placeholder:text-gray-500 outline-none focus:border-cyan-400/50 transition"
-                />
-
-                <button className="w-14 h-14 rounded-2xl bg-gradient-to-r from-cyan-400 to-purple-500 flex items-center justify-center hover:scale-105 transition">
-                  
-                  <ArrowRight
-                    size={22}
-                    className="text-black"
-                  />
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* BOTTOM */}
-
-        <div className="flex flex-col md:flex-row items-center justify-between gap-6 pt-10">
-          
-          <p className="text-gray-500 text-center md:text-left">
-            © 2026 InterviewIQ. All rights reserved.
-          </p>
-
-          <div className="flex items-center gap-4 px-5 py-3 rounded-full border border-white/10 bg-white/[0.03]">
-            
-            <Sparkles
-              size={16}
-              className="text-cyan-400"
-            />
-
-            <span className="text-sm text-gray-400">
-              Built with AI-powered innovation
-            </span>
+          <div className="flex items-center gap-3">
+            {[FaTwitter, FaGithub, FaLinkedin].map((Icon, i) => (
+              <button key={i} className="w-8 h-8 rounded-lg border border-white/[0.07] bg-white/[0.03] flex items-center justify-center text-zinc-500 hover:text-zinc-200 hover:bg-white/[0.06] transition-all">
+                <Icon size={14} />
+              </button>
+            ))}
           </div>
         </div>
       </div>
