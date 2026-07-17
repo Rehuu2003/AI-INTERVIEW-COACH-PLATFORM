@@ -1,268 +1,125 @@
 import { motion } from "framer-motion";
-
-import {
-  BarChart3,
-  TrendingUp,
-  Brain,
-  Activity,
-  Sparkles,
-} from "lucide-react";
-
-import {
-  fadeUp,
-  staggerContainer,
-} from "../../utils/animations";
+import { BarChart3, TrendingUp, Brain, Activity } from "lucide-react";
 
 const Analytics = () => {
+  const bars = [35, 58, 44, 78, 67, 52, 88];
+  const days = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Today"];
+
+  const skills = [
+    { label: "Communication", val: 94 },
+    { label: "Technical Accuracy", val: 91 },
+    { label: "Confidence", val: 89 },
+    { label: "Problem Solving", val: 96 },
+  ];
+
   return (
-    <section
-      id="analytics"
-      className="relative py-32 px-6 overflow-hidden bg-[#050816]"
-    >
-      
-      {/* BACKGROUND */}
+    <section id="analytics" className="bg-[#0a0a0c] py-32 px-5">
+      <div className="max-w-6xl mx-auto">
 
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(34,211,238,0.08),transparent_30%),radial-gradient(circle_at_bottom_right,rgba(168,85,247,0.08),transparent_30%)]" />
-
-      {/* GRID */}
-
-      <div className="absolute inset-0 opacity-[0.03] bg-[linear-gradient(to_right,#ffffff_1px,transparent_1px),linear-gradient(to_bottom,#ffffff_1px,transparent_1px)] bg-[size:70px_70px]" />
-
-      <motion.div
-        variants={staggerContainer}
-        initial="hidden"
-        whileInView="show"
-        viewport={{ once: true }}
-        className="max-w-7xl mx-auto relative z-10"
-      >
-        
-        {/* HEADER */}
-
-        <motion.div
-          variants={fadeUp}
-          className="text-center mb-24"
-        >
-          
-          <div className="inline-flex items-center gap-3 px-5 py-3 rounded-full border border-cyan-500/20 bg-cyan-500/5 backdrop-blur-xl mb-8">
-            
-            <Sparkles
-              size={18}
-              className="text-cyan-400"
-            />
-
-            <span className="text-sm text-cyan-300 font-medium">
-              AI Performance Analytics
-            </span>
-          </div>
-
-          <h2 className="text-5xl md:text-7xl font-black text-white leading-tight mb-8">
-            
-            Deep interview
-            <span className="bg-gradient-to-r from-cyan-400 to-purple-500 bg-clip-text text-transparent">
-              {" "}
-              intelligence
-            </span>
+        {/* Header */}
+        <div className="text-center max-w-2xl mx-auto mb-16">
+          <div className="ui-badge mb-6 mx-auto inline-flex">AI Performance Analytics</div>
+          <h2 className="text-4xl lg:text-5xl font-black text-white mb-5">
+            Deep interview intelligence.
           </h2>
-
-          <p className="text-xl text-gray-400 max-w-3xl mx-auto leading-relaxed">
-            Advanced AI tracks communication clarity,
-            confidence, technical depth, and realtime
-            performance growth.
+          <p className="text-zinc-400 text-lg leading-relaxed">
+            Track communication, confidence, technical depth, and growth across every session.
           </p>
-        </motion.div>
+        </div>
 
-        {/* GRID */}
+        {/* Main grid */}
+        <div className="grid lg:grid-cols-[1fr_380px] gap-6">
 
-        <div className="grid lg:grid-cols-[1.3fr_0.7fr] gap-8">
-          
-          {/* LEFT LARGE CARD */}
-
+          {/* Left — chart card */}
           <motion.div
-            variants={fadeUp}
-            className="relative rounded-[40px] border border-white/10 bg-gradient-to-br from-[#081120] to-[#111827] p-10 overflow-hidden"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="rounded-2xl bg-[#111113] border border-white/[0.07] p-7"
           >
-            
-            {/* GLOW */}
-
-            <div className="absolute top-0 right-0 w-72 h-72 bg-cyan-500/10 blur-[100px]" />
-
-            {/* TOP */}
-
-            <div className="flex items-center justify-between mb-14 relative z-10">
-              
-              <div>
-                
-                <div className="flex items-center gap-4 mb-4">
-                  
-                  <div className="w-14 h-14 rounded-2xl bg-gradient-to-r from-cyan-400 to-blue-500 flex items-center justify-center">
-                    
-                    <BarChart3
-                      size={28}
-                      className="text-black"
-                    />
-                  </div>
-
-                  <div>
-                    
-                    <h3 className="text-3xl font-black text-white">
-                      Live Analytics
-                    </h3>
-
-                    <p className="text-gray-400">
-                      AI-powered performance tracking
-                    </p>
-                  </div>
+            <div className="flex items-center justify-between mb-8">
+              <div className="flex items-center gap-3">
+                <div className="w-9 h-9 rounded-lg bg-violet-600/10 flex items-center justify-center">
+                  <BarChart3 size={17} className="text-violet-400" />
+                </div>
+                <div>
+                  <p className="text-white font-semibold text-sm">Performance Trend</p>
+                  <p className="text-zinc-500 text-xs">AI-tracked weekly sessions</p>
                 </div>
               </div>
-
-              <div className="px-4 py-2 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 font-semibold text-sm">
-                LIVE
+              <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-md bg-emerald-500/10 border border-emerald-500/20">
+                <div className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                <span className="text-xs text-emerald-400 font-medium">Live</span>
               </div>
             </div>
 
-            {/* CHART */}
-
-            <div className="relative h-[320px] rounded-[30px] border border-white/5 bg-black/20 overflow-hidden mb-10">
-              
-              <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(34,211,238,0.15),transparent_30%)]" />
-
-              {/* BARS */}
-
-              <div className="absolute bottom-14 left-10 right-10 flex items-end gap-5 h-48">
-                
-                {[35, 58, 44, 78, 67, 52, 88].map(
-                  (height, index) => (
+            {/* Bar chart */}
+            <div className="relative h-52 rounded-xl bg-[#0d0d0f] border border-white/[0.04] overflow-hidden mb-6">
+              <div className="absolute bottom-8 left-6 right-6 flex items-end gap-3 h-36">
+                {bars.map((h, i) => (
+                  <div key={i} className="flex-1 flex flex-col items-center gap-1">
                     <div
-                      key={index}
-                      className="flex-1 rounded-t-[20px] bg-gradient-to-t from-cyan-400 to-purple-500 relative shadow-[0_0_30px_rgba(34,211,238,0.3)]"
+                      className="w-full rounded-t-lg transition-all duration-500"
                       style={{
-                        height: `${height}%`,
+                        height: `${h}%`,
+                        background: i === 6
+                          ? "linear-gradient(to top, #7c3aed, #a78bfa)"
+                          : "rgba(124,58,237,0.25)",
                       }}
-                    >
-                      <div className="absolute -top-3 left-1/2 -translate-x-1/2 w-4 h-4 rounded-full bg-cyan-300 shadow-[0_0_20px_rgba(34,211,238,0.8)]" />
-                    </div>
-                  )
-                )}
+                    />
+                  </div>
+                ))}
               </div>
-
-              {/* LABELS */}
-
-              <div className="absolute bottom-6 left-10 right-10 flex justify-between text-gray-500 text-sm">
-                
-                {[
-                  "Mon",
-                  "Tue",
-                  "Wed",
-                  "Thu",
-                  "Fri",
-                  "Sat",
-                  "Today",
-                ].map((day) => (
-                  <span key={day}>
-                    {day}
-                  </span>
+              <div className="absolute bottom-2 left-6 right-6 flex justify-between">
+                {days.map((d, i) => (
+                  <span key={i} className={`text-[11px] ${i === 6 ? "text-violet-400 font-medium" : "text-zinc-600"}`}>{d}</span>
                 ))}
               </div>
             </div>
 
-            {/* STATS */}
-
-            <div className="grid md:grid-cols-3 gap-5 relative z-10">
-              
-              {[
-                {
-                  label: "Interviews",
-                  value: "1,248",
-                },
-
-                {
-                  label: "AI Sessions",
-                  value: "50K+",
-                },
-
-                {
-                  label: "Success Rate",
-                  value: "95%",
-                },
-              ].map((item, index) => (
-                <div
-                  key={index}
-                  className="rounded-2xl border border-white/5 bg-white/[0.03] p-6"
-                >
-                  
-                  <p className="text-gray-400 mb-3">
-                    {item.label}
-                  </p>
-
-                  <h4 className="text-4xl font-black bg-gradient-to-r from-cyan-400 to-purple-500 bg-clip-text text-transparent">
-                    {item.value}
-                  </h4>
+            {/* Stats row */}
+            <div className="grid grid-cols-3 gap-4">
+              {[{ label: "Total Sessions", val: "1,248" }, { label: "AI Interviews", val: "50K+" }, { label: "Success Rate", val: "95%" }].map((s, i) => (
+                <div key={i} className="rounded-xl bg-white/[0.02] border border-white/[0.04] p-4">
+                  <p className="text-xs text-zinc-500 mb-1">{s.label}</p>
+                  <p className="text-xl font-bold text-white">{s.val}</p>
                 </div>
               ))}
             </div>
           </motion.div>
 
-          {/* RIGHT SIDE */}
-
-          <div className="flex flex-col gap-8">
-            
-            {/* SCORE CARD */}
-
+          {/* Right — skill breakdown */}
+          <div className="flex flex-col gap-5">
             <motion.div
-              variants={fadeUp}
-              className="rounded-[35px] border border-white/10 bg-gradient-to-br from-[#081120] to-[#111827] p-8"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.1 }}
+              className="rounded-2xl bg-[#111113] border border-white/[0.07] p-6"
             >
-              
-              <div className="flex items-center gap-4 mb-8">
-                
-                <div className="w-14 h-14 rounded-2xl bg-gradient-to-r from-purple-500 to-pink-500 flex items-center justify-center">
-                  
-                  <Brain
-                    size={26}
-                    className="text-white"
-                  />
+              <div className="flex items-center gap-3 mb-6">
+                <div className="w-9 h-9 rounded-lg bg-violet-600/10 flex items-center justify-center">
+                  <Brain size={17} className="text-violet-400" />
                 </div>
-
                 <div>
-                  
-                  <h3 className="text-2xl font-black text-white">
-                    AI Score Analysis
-                  </h3>
-
-                  <p className="text-gray-400">
-                    Deep interview evaluation
-                  </p>
+                  <p className="text-white font-semibold text-sm">Score Breakdown</p>
+                  <p className="text-zinc-500 text-xs">Across dimensions</p>
                 </div>
               </div>
-
-              <div className="space-y-7">
-                
-                {[
-                  ["Communication", "94%"],
-                  ["Technical Accuracy", "91%"],
-                  ["Confidence", "89%"],
-                  ["Problem Solving", "96%"],
-                ].map(([label, value], index) => (
-                  <div key={index}>
-                    
-                    <div className="flex justify-between mb-3">
-                      
-                      <span className="text-white font-semibold">
-                        {label}
-                      </span>
-
-                      <span className="text-cyan-400 font-bold">
-                        {value}
-                      </span>
+              <div className="space-y-4">
+                {skills.map((s, i) => (
+                  <div key={i}>
+                    <div className="flex justify-between mb-1.5">
+                      <span className="text-sm text-zinc-300">{s.label}</span>
+                      <span className="text-sm font-semibold text-violet-400">{s.val}%</span>
                     </div>
-
-                    <div className="h-3 rounded-full bg-white/5 overflow-hidden">
-                      
-                      <div
-                        className="h-full rounded-full bg-gradient-to-r from-cyan-400 to-purple-500"
-                        style={{
-                          width: value,
-                        }}
+                    <div className="h-1.5 rounded-full bg-white/[0.05] overflow-hidden">
+                      <motion.div
+                        initial={{ width: 0 }}
+                        whileInView={{ width: `${s.val}%` }}
+                        viewport={{ once: true }}
+                        transition={{ duration: 0.7, delay: i * 0.1 }}
+                        className="h-full rounded-full bg-violet-500"
                       />
                     </div>
                   </div>
@@ -270,76 +127,30 @@ const Analytics = () => {
               </div>
             </motion.div>
 
-            {/* BOTTOM CARDS */}
-
-            <div className="grid grid-cols-2 gap-6">
-              
+            <div className="grid grid-cols-2 gap-4">
               <motion.div
-                variants={fadeUp}
-                className="rounded-[30px] border border-emerald-500/10 bg-gradient-to-br from-emerald-500/10 to-transparent p-6"
+                initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.15 }}
+                className="rounded-2xl bg-emerald-500/5 border border-emerald-500/15 p-5"
               >
-                
-                <Activity
-                  size={28}
-                  className="text-emerald-400 mb-6"
-                />
-
-                <h4 className="text-2xl font-black text-white mb-4">
-                  AI Feedback
-                </h4>
-
-                <p className="text-gray-300 leading-relaxed">
-                  Strong technical explanation with confident delivery detected.
-                </p>
-
-                <div className="mt-8 text-emerald-400 font-semibold">
-                  Communication improved
-                </div>
+                <Activity size={18} className="text-emerald-400 mb-4" />
+                <p className="text-white font-semibold text-sm mb-2">AI Feedback</p>
+                <p className="text-zinc-400 text-xs leading-relaxed">Strong delivery with clear technical structure.</p>
+                <p className="text-emerald-400 text-xs font-medium mt-3">↑ Communication +12%</p>
               </motion.div>
 
               <motion.div
-                variants={fadeUp}
-                className="rounded-[30px] border border-cyan-500/10 bg-gradient-to-br from-cyan-500/10 to-transparent p-6"
+                initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.2 }}
+                className="rounded-2xl bg-violet-500/5 border border-violet-500/15 p-5"
               >
-                
-                <TrendingUp
-                  size={28}
-                  className="text-cyan-400 mb-6"
-                />
-
-                <h4 className="text-2xl font-black text-white mb-4">
-                  Growth
-                </h4>
-
-                <div className="text-6xl font-black bg-gradient-to-r from-cyan-400 to-purple-500 bg-clip-text text-transparent mb-4">
-                  +18%
-                </div>
-
-                <p className="text-gray-400">
-                  Communication clarity improved this week.
-                </p>
-
-                {/* MINI BARS */}
-
-                <div className="flex items-end gap-2 h-20 mt-8">
-                  
-                  {[20, 28, 25, 35, 42, 50, 58].map(
-                    (height, index) => (
-                      <div
-                        key={index}
-                        className="flex-1 rounded-full bg-gradient-to-t from-cyan-400 to-purple-500"
-                        style={{
-                          height: `${height}%`,
-                        }}
-                      />
-                    )
-                  )}
-                </div>
+                <TrendingUp size={18} className="text-violet-400 mb-4" />
+                <p className="text-white font-semibold text-sm mb-1">Growth</p>
+                <p className="text-3xl font-black text-violet-400">+18%</p>
+                <p className="text-zinc-500 text-xs mt-1">this week</p>
               </motion.div>
             </div>
           </div>
         </div>
-      </motion.div>
+      </div>
     </section>
   );
 };

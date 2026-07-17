@@ -1,227 +1,87 @@
-import {
-  Brain,
-  Mic,
-  BarChart3,
-  Sparkles,
-  ShieldCheck,
-  Clock3,
-  ArrowRight,
-  CheckCircle2,
-} from "lucide-react";
+import { Brain, Mic, BarChart3, Sparkles, ShieldCheck, Clock3 } from "lucide-react";
+import { motion } from "framer-motion";
 
 const features = [
   {
     icon: Brain,
-    title: "AI Interview Intelligence",
-    description:
-      "Advanced AI evaluates your technical depth, communication clarity, and confidence in real time.",
+    label: "AI Intelligence",
+    title: "Real-time interview analysis",
+    description: "GPT-4 powered AI evaluates your technical depth, communication clarity, and confidence as you answer — giving you instant, actionable scores.",
   },
   {
     icon: Mic,
-    title: "Voice & Communication Analysis",
-    description:
-      "Analyze speaking pace, filler words, tone, and delivery with realtime voice intelligence.",
+    label: "Voice Engine",
+    title: "Speech & tone analysis",
+    description: "Our voice engine analyses speaking pace, filler words, tone, and delivery. Understand how you sound — not just what you say.",
   },
   {
     icon: BarChart3,
-    title: "Performance Analytics",
-    description:
-      "Track progress with AI-generated insights, growth metrics, and detailed score breakdowns.",
+    label: "Analytics",
+    title: "Progress tracking that matters",
+    description: "Track every dimension of your performance across sessions. See exactly where you're improving and what still needs work.",
   },
 ];
 
-const smallFeatures = [
-  {
-    icon: Sparkles,
-    title: "Realtime AI Feedback",
-  },
-  {
-    icon: ShieldCheck,
-    title: "Industry-Level Questions",
-  },
-  {
-    icon: Clock3,
-    title: "24/7 Practice Sessions",
-  },
+const extras = [
+  { icon: Sparkles, label: "Real-time AI feedback after every answer" },
+  { icon: ShieldCheck, label: "Industry-level questions across 10+ roles" },
+  { icon: Clock3, label: "Practice anytime — AI available 24/7" },
 ];
 
 const Features = () => {
   return (
-    <section className="relative py-32 px-6 overflow-hidden bg-[#050816]">
-      
-      {/* BACKGROUND */}
+    <section id="features" className="bg-[#09090b] py-32 px-5">
+      <div className="max-w-6xl mx-auto">
 
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(34,211,238,0.08),transparent_30%),radial-gradient(circle_at_bottom_right,rgba(168,85,247,0.08),transparent_30%)]" />
-
-      {/* GRID */}
-
-      <div className="absolute inset-0 opacity-[0.03] bg-[linear-gradient(to_right,#ffffff_1px,transparent_1px),linear-gradient(to_bottom,#ffffff_1px,transparent_1px)] bg-[size:70px_70px]" />
-
-      <div className="max-w-7xl mx-auto relative z-10">
-        
-        {/* HEADER */}
-
-        <div className="max-w-3xl mb-20">
-          
-          <div className="inline-flex items-center gap-3 px-5 py-2 rounded-full border border-cyan-500/20 bg-cyan-500/5 mb-8">
-            
-            <Sparkles
-              size={16}
-              className="text-cyan-400"
-            />
-
-            <span className="text-sm text-cyan-300">
-              Platform Features
-            </span>
-          </div>
-
-          <h2 className="text-5xl md:text-7xl font-black leading-[1.05] mb-8 text-white">
-            
-            Designed for
-            <span className="bg-gradient-to-r from-cyan-400 to-purple-500 bg-clip-text text-transparent">
-              {" "}
-              modern hiring.
-            </span>
+        {/* Header */}
+        <div className="max-w-xl mb-16">
+          <div className="ui-badge mb-6">Platform Features</div>
+          <h2 className="text-4xl lg:text-5xl font-black text-white mb-5">
+            Built for the way modern hiring works.
           </h2>
-
-          <p className="text-xl text-gray-400 leading-relaxed">
-            Everything you need to prepare smarter, improve
-            communication, and perform confidently in interviews.
+          <p className="text-zinc-400 text-lg leading-relaxed">
+            Everything you need to prepare smarter, communicate better, and walk into interviews with real confidence.
           </p>
         </div>
 
-        {/* MAIN FEATURE GRID */}
-
-        <div className="grid lg:grid-cols-3 gap-8 mb-10">
-          
-          {features.map((feature, index) => {
-            const Icon = feature.icon;
-
+        {/* Feature cards */}
+        <div className="grid lg:grid-cols-3 gap-5 mb-10">
+          {features.map((f, i) => {
+            const Icon = f.icon;
             return (
-              <div
-                key={index}
-                className="
-                  group
-                  relative
-                  rounded-[32px]
-                  border
-                  border-white/10
-                  bg-white/[0.03]
-                  p-10
-                  hover:border-cyan-500/30
-                  transition-all
-                  duration-500
-                  overflow-hidden
-                "
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.08 }}
+                className="group rounded-2xl bg-[#111113] border border-white/[0.07] p-7 hover:border-violet-500/30 transition-all duration-300 relative overflow-hidden"
               >
-                
-                {/* HOVER GLOW */}
-
-                <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition duration-500 bg-[radial-gradient(circle_at_top_left,rgba(34,211,238,0.08),transparent_35%)]" />
-
-                {/* ICON */}
-
-                <div className="relative z-10 w-16 h-16 rounded-2xl bg-gradient-to-r from-cyan-400 to-purple-500 flex items-center justify-center mb-8 shadow-[0_0_30px_rgba(34,211,238,0.25)]">
-                  
-                  <Icon
-                    size={30}
-                    className="text-black"
-                  />
-                </div>
-
-                {/* CONTENT */}
+                <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-gradient-to-br from-violet-600/5 to-transparent rounded-2xl" />
 
                 <div className="relative z-10">
-                  
-                  <h3 className="text-3xl font-black text-white mb-5 leading-tight">
-                    {feature.title}
-                  </h3>
-
-                  <p className="text-gray-400 leading-relaxed text-lg mb-8">
-                    {feature.description}
-                  </p>
-
-                  <div className="space-y-4">
-                    
-                    {[
-                      "AI-powered evaluation",
-                      "Realtime insights",
-                      "Detailed improvement tracking",
-                    ].map((item, idx) => (
-                      <div
-                        key={idx}
-                        className="flex items-center gap-3"
-                      >
-                        <CheckCircle2
-                          size={18}
-                          className="text-emerald-400"
-                        />
-
-                        <span className="text-gray-300">
-                          {item}
-                        </span>
-                      </div>
-                    ))}
+                  <div className="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-violet-600/10 border border-violet-500/20 mb-6">
+                    <Icon size={13} className="text-violet-400" />
+                    <span className="text-xs text-violet-400 font-medium">{f.label}</span>
                   </div>
-
-                  {/* BUTTON */}
-
-                  <button className="mt-10 flex items-center gap-3 text-cyan-400 font-semibold group-hover:gap-4 transition-all">
-                    
-                    Explore Feature
-
-                    <ArrowRight size={18} />
-                  </button>
+                  <h3 className="text-xl font-bold text-white mb-3 tracking-tight">{f.title}</h3>
+                  <p className="text-zinc-400 text-[15px] leading-relaxed">{f.description}</p>
                 </div>
-              </div>
+              </motion.div>
             );
           })}
         </div>
 
-        {/* SMALL FEATURES */}
-
-        <div className="grid md:grid-cols-3 gap-6">
-          
-          {smallFeatures.map((item, index) => {
-            const Icon = item.icon;
-
+        {/* Extra pills */}
+        <div className="grid md:grid-cols-3 gap-4">
+          {extras.map((e, i) => {
+            const Icon = e.icon;
             return (
-              <div
-                key={index}
-                className="
-                  flex
-                  items-center
-                  gap-5
-                  rounded-3xl
-                  border
-                  border-white/10
-                  bg-white/[0.03]
-                  px-8
-                  py-6
-                  hover:border-cyan-500/20
-                  transition-all
-                  duration-300
-                "
-              >
-                
-                <div className="w-14 h-14 rounded-2xl bg-white/5 flex items-center justify-center">
-                  
-                  <Icon
-                    size={24}
-                    className="text-cyan-400"
-                  />
+              <div key={i} className="flex items-center gap-3 rounded-xl bg-[#111113] border border-white/[0.06] px-5 py-4">
+                <div className="w-8 h-8 rounded-lg bg-violet-600/10 flex items-center justify-center shrink-0">
+                  <Icon size={15} className="text-violet-400" />
                 </div>
-
-                <div>
-                  
-                  <h4 className="text-xl font-bold text-white">
-                    {item.title}
-                  </h4>
-
-                  <p className="text-gray-400 text-sm mt-1">
-                    Premium AI-powered experience
-                  </p>
-                </div>
+                <p className="text-sm text-zinc-300 font-medium">{e.label}</p>
               </div>
             );
           })}

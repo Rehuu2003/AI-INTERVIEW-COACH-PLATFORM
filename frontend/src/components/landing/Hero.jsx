@@ -1,328 +1,172 @@
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
-
-import {
-  Brain,
-  Sparkles,
-  ArrowRight,
-  Play,
-} from "lucide-react";
-
-import {
-  fadeLeft,
-  fadeRight,
-  staggerContainer,
-} from "../../utils/animations";
+import { ArrowRight, Zap, TrendingUp, MessageSquare, BarChart2 } from "lucide-react";
 
 const Hero = () => {
   return (
-    <section className="relative min-h-screen overflow-hidden bg-[#050816] px-6 pt-32 pb-24 flex items-center">
-      
-      {/* BACKGROUND */}
+    <section className="relative min-h-screen bg-[#09090b] overflow-hidden flex items-center pt-16">
 
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(34,211,238,0.12),transparent_30%),radial-gradient(circle_at_bottom_right,rgba(168,85,247,0.12),transparent_30%)]" />
+      {/* Single centered glow — used once, not everywhere */}
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[500px] bg-violet-600/10 blur-[140px] rounded-full pointer-events-none" />
+      <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/[0.08] to-transparent" />
 
-      {/* GRID */}
+      {/* Dot grid */}
+      <div className="absolute inset-0 dot-grid opacity-100 pointer-events-none" />
 
-      <div className="absolute inset-0 opacity-[0.03] bg-[linear-gradient(to_right,#ffffff_1px,transparent_1px),linear-gradient(to_bottom,#ffffff_1px,transparent_1px)] bg-[size:70px_70px]" />
+      <div className="relative z-10 max-w-6xl mx-auto px-5 py-24 w-full">
+        <div className="grid lg:grid-cols-2 gap-16 items-center">
 
-      {/* GLOWS */}
-
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[1100px] h-[500px] bg-cyan-500/10 blur-[180px]" />
-
-      <div className="absolute top-40 left-10 w-72 h-72 bg-purple-500/10 rounded-full blur-[120px]" />
-
-      <div className="absolute bottom-0 right-0 w-96 h-96 bg-cyan-500/10 rounded-full blur-[120px]" />
-
-      {/* MAIN */}
-
-      <motion.div
-        variants={staggerContainer}
-        initial="hidden"
-        animate="show"
-        className="max-w-7xl mx-auto relative z-10 w-full"
-      >
-        <div className="grid lg:grid-cols-[1fr_1.1fr] gap-20 items-center">
-          
-          {/* LEFT SIDE */}
-
-          <motion.div variants={fadeLeft}>
-            
-            {/* BADGE */}
-
-            <div className="inline-flex items-center gap-3 px-5 py-3 rounded-full border border-cyan-500/20 bg-cyan-500/5 backdrop-blur-xl mb-10">
-              
-              <Sparkles
-                size={18}
-                className="text-cyan-400"
-              />
-
-              <span className="text-sm text-cyan-300 font-medium">
-                AI-Powered Interview Intelligence
-              </span>
+          {/* LEFT */}
+          <motion.div
+            initial={{ opacity: 0, y: 24 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.55 }}
+          >
+            {/* Badge */}
+            <div className="ui-badge mb-8">
+              <Zap size={13} fill="currentColor" />
+              AI-Powered Interview Intelligence
             </div>
 
-            {/* TITLE */}
-
-            <h1 className="text-5xl md:text-7xl font-black leading-[0.95] tracking-tight text-white mb-8">
-              
-              Crack your
-              <span className="bg-gradient-to-r from-cyan-400 via-blue-400 to-purple-500 bg-clip-text text-transparent">
-                {" "}
-                dream job
-              </span>
+            {/* Headline */}
+            <h1 className="text-5xl lg:text-[64px] font-black text-white leading-[1.05] tracking-tight mb-6">
+              Ace every{" "}
+              <span className="text-violet-400">interview</span>
               <br />
               with AI coaching.
             </h1>
 
-            {/* DESCRIPTION */}
-
-            <p className="text-xl md:text-2xl text-gray-400 leading-relaxed max-w-2xl mb-12">
-              Practice smarter using advanced AI simulations,
-              realtime feedback, communication analysis,
-              and intelligent performance tracking.
+            <p className="text-lg text-zinc-400 leading-relaxed max-w-lg mb-10">
+              Practice with a real-time AI interviewer, get scored on communication, confidence, and technical depth — then track your progress over time.
             </p>
 
-            {/* BUTTONS */}
-
-            <div className="flex flex-col sm:flex-row gap-5 mb-14">
-              
+            {/* CTAs */}
+            <div className="flex flex-wrap gap-3 mb-14">
               <Link to="/signup">
-                <button className="group h-16 px-9 rounded-2xl bg-gradient-to-r from-cyan-400 to-purple-500 text-black font-black text-lg hover:scale-105 transition-all duration-300 shadow-[0_0_50px_rgba(34,211,238,0.25)] flex items-center gap-3">
-                  
-                  Start Free
-
-                  <ArrowRight
-                    size={20}
-                    className="group-hover:translate-x-1 transition"
-                  />
+                <button className="btn-primary h-11 px-6 text-sm">
+                  Start for free <ArrowRight size={15} />
                 </button>
               </Link>
-
-              <button className="h-16 px-8 rounded-2xl border border-white/10 bg-white/[0.04] backdrop-blur-xl text-white font-semibold text-lg hover:bg-white/[0.07] transition-all duration-300 flex items-center gap-3">
-                
-                <Play size={18} />
-
-                Watch Demo
-              </button>
+              <Link to="/login">
+                <button className="btn-ghost h-11 px-6 text-sm">
+                  Sign in
+                </button>
+              </Link>
             </div>
 
-            {/* STATS */}
-
-            <div className="flex flex-wrap gap-10">
-              
+            {/* Stats row */}
+            <div className="flex flex-wrap gap-8 pt-8 border-t border-white/[0.06]">
               {[
-                {
-                  value: "50K+",
-                  label: "AI Interviews",
-                },
-
-                {
-                  value: "95%",
-                  label: "Success Rate",
-                },
-
-                {
-                  value: "24/7",
-                  label: "Realtime Feedback",
-                },
-              ].map((item, index) => (
-                <div key={index}>
-                  
-                  <h3 className="text-4xl md:text-5xl font-black bg-gradient-to-r from-cyan-400 to-purple-500 bg-clip-text text-transparent mb-2">
-                    {item.value}
-                  </h3>
-
-                  <p className="text-gray-400 text-lg">
-                    {item.label}
-                  </p>
+                { value: "50K+", label: "Interviews" },
+                { value: "95%", label: "Success rate" },
+                { value: "24/7", label: "AI availability" },
+              ].map((s, i) => (
+                <div key={i}>
+                  <p className="text-2xl font-bold text-white">{s.value}</p>
+                  <p className="text-sm text-zinc-500 mt-0.5">{s.label}</p>
                 </div>
               ))}
             </div>
           </motion.div>
 
-          {/* RIGHT SIDE */}
-
+          {/* RIGHT — Product preview card */}
           <motion.div
-            variants={fadeRight}
-            className="relative flex justify-center"
+            initial={{ opacity: 0, y: 32 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.55, delay: 0.12 }}
+            className="relative"
           >
-            
-            {/* BACK GLOW */}
+            <div className="absolute -inset-px rounded-2xl bg-gradient-to-b from-violet-500/20 to-transparent pointer-events-none" />
 
-            <div className="absolute inset-0 bg-cyan-500/10 blur-[120px]" />
-
-            {/* FLOATING ORB */}
-
-            <div className="absolute top-10 right-10 w-32 h-32 rounded-full bg-purple-500/20 blur-[80px]" />
-
-            {/* MAIN PANEL */}
-
-            <div className="relative w-full max-w-[700px] rounded-[42px] border border-white/10 bg-gradient-to-br from-[#081120] via-[#0b1220] to-[#111827] backdrop-blur-2xl overflow-hidden shadow-[0_0_80px_rgba(0,0,0,0.45)]">
-              
-              {/* TOP BAR */}
-
-              <div className="flex items-center justify-between px-8 py-6 border-b border-white/5">
-                
-                <div className="flex items-center gap-4">
-                  
-                  <div className="w-14 h-14 rounded-2xl bg-gradient-to-r from-cyan-400 to-purple-500 flex items-center justify-center shadow-[0_0_35px_rgba(34,211,238,0.35)]">
-                    
-                    <Brain
-                      size={28}
-                      className="text-black"
-                    />
-                  </div>
-
-                  <div>
-                    
-                    <h3 className="text-2xl font-black text-white">
-                      AI Interview Intelligence
-                    </h3>
-
-                    <p className="text-gray-400">
-                      Realtime analysis engine
-                    </p>
-                  </div>
-                </div>
-
-                <div className="px-4 py-2 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-sm font-semibold">
-                  LIVE
+            <div className="rounded-2xl bg-[#111113] border border-white/[0.08] overflow-hidden shadow-2xl">
+              {/* Window bar */}
+              <div className="flex items-center gap-2 px-5 py-4 border-b border-white/[0.06] bg-white/[0.02]">
+                <div className="w-3 h-3 rounded-full bg-red-500/70" />
+                <div className="w-3 h-3 rounded-full bg-yellow-500/70" />
+                <div className="w-3 h-3 rounded-full bg-green-500/70" />
+                <span className="ml-3 text-xs text-zinc-500 font-mono">interviewiq — session #24</span>
+                <div className="ml-auto flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-emerald-500/10 border border-emerald-500/20">
+                  <div className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                  <span className="text-xs text-emerald-400 font-medium">Live</span>
                 </div>
               </div>
 
-              {/* MAIN CONTENT */}
-
-              <div className="p-8">
-                
-                {/* TOP SCORE */}
-
-                <div className="flex items-end justify-between mb-10">
-                  
+              <div className="p-6">
+                {/* Score header */}
+                <div className="flex items-end justify-between mb-6">
                   <div>
-                    
-                    <p className="text-gray-400 mb-3">
-                      Overall Interview Score
-                    </p>
-
-                    <h1 className="text-7xl font-black bg-gradient-to-r from-cyan-400 via-blue-400 to-purple-500 bg-clip-text text-transparent leading-none">
-                      94%
-                    </h1>
+                    <p className="text-xs text-zinc-500 mb-1 font-medium uppercase tracking-wider">Overall Score</p>
+                    <p className="text-6xl font-black text-white leading-none">94<span className="text-3xl text-zinc-500">%</span></p>
                   </div>
-
                   <div className="text-right">
-                    
-                    <p className="text-emerald-400 text-lg font-bold mb-2">
-                      +28% Improvement
-                    </p>
-
-                    <p className="text-gray-500">
-                      Compared to last session
-                    </p>
+                    <div className="flex items-center gap-1 justify-end text-emerald-400 text-sm font-semibold mb-1">
+                      <TrendingUp size={14} /> +28%
+                    </div>
+                    <p className="text-xs text-zinc-500">vs last session</p>
                   </div>
                 </div>
 
-                {/* WAVEFORM */}
-
-                <div className="relative h-[220px] rounded-[30px] border border-white/5 bg-black/20 overflow-hidden mb-8">
-                  
-                  {/* INNER GLOW */}
-
-                  <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(34,211,238,0.12),transparent_30%)]" />
-
-                  {/* BARS */}
-
-                  <div className="absolute bottom-10 left-8 right-8 flex items-end gap-3 h-32">
-                    
-                    {[30, 55, 42, 75, 60, 48, 82, 50, 65, 40, 72, 55].map(
-                      (height, index) => (
-                        <div
-                          key={index}
-                          className="flex-1 rounded-full bg-gradient-to-t from-cyan-400 to-purple-500 shadow-[0_0_20px_rgba(34,211,238,0.35)]"
-                          style={{
-                            height: `${height}%`,
-                          }}
-                        />
-                      )
-                    )}
+                {/* Waveform */}
+                <div className="relative h-28 rounded-xl bg-[#0d0d0f] border border-white/[0.04] mb-5 overflow-hidden">
+                  <div className="absolute inset-0 bg-gradient-to-r from-violet-500/5 to-transparent" />
+                  <div className="absolute bottom-5 left-5 right-5 flex items-end gap-2 h-16">
+                    {[30, 55, 42, 75, 60, 48, 82, 50, 65, 40, 72, 55, 48, 68].map((h, i) => (
+                      <div
+                        key={i}
+                        className="flex-1 rounded-sm"
+                        style={{
+                          height: `${h}%`,
+                          background: i >= 10
+                            ? `rgba(124,58,237,${0.3 + (h / 100) * 0.5})`
+                            : `rgba(124,58,237,${0.15 + (h / 100) * 0.25})`,
+                        }}
+                      />
+                    ))}
                   </div>
-
-                  {/* LINE */}
-
-                  <svg
-                    viewBox="0 0 500 120"
-                    className="absolute bottom-0 left-0 w-full h-32"
-                  >
-                    <path
-                      d="M0 90 C60 40 120 110 180 70 C240 30 300 100 360 55 C420 20 460 80 500 35"
-                      stroke="url(#gradient)"
-                      strokeWidth="4"
-                      fill="none"
-                      strokeLinecap="round"
-                    />
-
+                  <svg viewBox="0 0 500 80" className="absolute bottom-0 left-0 w-full h-16 opacity-60">
                     <defs>
-                      <linearGradient
-                        id="gradient"
-                        x1="0%"
-                        y1="0%"
-                        x2="100%"
-                        y2="0%"
-                      >
-                        <stop
-                          offset="0%"
-                          stopColor="#22d3ee"
-                        />
-
-                        <stop
-                          offset="100%"
-                          stopColor="#a855f7"
-                        />
+                      <linearGradient id="lg" x1="0%" y1="0%" x2="100%" y2="0%">
+                        <stop offset="0%" stopColor="#7c3aed" stopOpacity="0.3" />
+                        <stop offset="100%" stopColor="#a78bfa" stopOpacity="0.8" />
                       </linearGradient>
                     </defs>
+                    <path d="M0 60 C60 25 120 70 180 45 C240 20 300 65 360 35 C420 10 460 50 500 25"
+                      stroke="url(#lg)" strokeWidth="2" fill="none" strokeLinecap="round" />
                   </svg>
                 </div>
 
-                {/* METRICS */}
-
-                <div className="grid grid-cols-3 gap-4">
-                  
+                {/* Metrics */}
+                <div className="grid grid-cols-3 gap-3 mb-5">
                   {[
-                    {
-                      title: "Communication",
-                      value: "94%",
-                    },
+                    { label: "Communication", val: "94%", icon: MessageSquare },
+                    { label: "Technical", val: "91%", icon: Zap },
+                    { label: "Confidence", val: "89%", icon: BarChart2 },
+                  ].map((m, i) => {
+                    const Icon = m.icon;
+                    return (
+                      <div key={i} className="rounded-xl bg-white/[0.03] border border-white/[0.05] p-3">
+                        <div className="flex items-center gap-1.5 mb-2">
+                          <Icon size={12} className="text-violet-400" />
+                          <p className="text-[11px] text-zinc-500 font-medium">{m.label}</p>
+                        </div>
+                        <p className="text-lg font-bold text-white">{m.val}</p>
+                      </div>
+                    );
+                  })}
+                </div>
 
-                    {
-                      title: "Technical",
-                      value: "91%",
-                    },
-
-                    {
-                      title: "Confidence",
-                      value: "89%",
-                    },
-                  ].map((item, index) => (
-                    <div
-                      key={index}
-                      className="rounded-2xl border border-white/5 bg-white/[0.03] p-5"
-                    >
-                      
-                      <p className="text-gray-400 text-sm mb-3">
-                        {item.title}
-                      </p>
-
-                      <h3 className="text-4xl font-black bg-gradient-to-r from-cyan-400 to-purple-500 bg-clip-text text-transparent">
-                        {item.value}
-                      </h3>
-                    </div>
-                  ))}
+                {/* AI message */}
+                <div className="rounded-xl bg-violet-600/10 border border-violet-500/20 px-4 py-3">
+                  <p className="text-xs text-zinc-400 mb-1 font-medium">AI Feedback</p>
+                  <p className="text-sm text-zinc-300 leading-relaxed">
+                    Strong technical explanations. Focus on structuring answers using STAR method for behavioral questions.
+                  </p>
                 </div>
               </div>
             </div>
           </motion.div>
         </div>
-      </motion.div>
+      </div>
     </section>
   );
 };
