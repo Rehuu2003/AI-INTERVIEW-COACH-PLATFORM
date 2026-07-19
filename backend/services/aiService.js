@@ -1,6 +1,7 @@
-const OpenAI = require('openai');
+const { GoogleGenerativeAI } = require("@google/generative-ai");
 
-const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
+const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
+
 
 /**
  * Builds the system prompt for the AI interviewer
@@ -35,18 +36,23 @@ Important rules:
 const getNextInterviewMessage = async (messages, topic, difficulty, type) => {
   const systemPrompt = buildSystemPrompt(topic, difficulty, type);
 
-  const completion = await openai.chat.completions.create({
-    model: 'gpt-4o-mini',
-    messages: [
-      { role: 'system', content: systemPrompt },
-      ...messages.map((m) => ({ role: m.role, content: m.content })),
-    ],
-    max_tokens: 300,
-    temperature: 0.7,
+  const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+
+  const parts = [
+    { text: systemPrompt },
+    ...messages.map((m) => ({ text: `${m.role === "assistant" ? "Interviewer" : "Candidate"}: ${m.content}` })),
+    { text: "\nInterviewer:" },
+  ];
+
+  const result = await model.generateContent({
+    contents: [{ role: "user", parts }],
+    generationConfig: { maxOutputTokens: 300, temperature: 0.7 },
   });
 
-  return completion.choices[0].message.content.trim();
+  const text = result.response.text();
+  return text.trim();
 };
+
 
 /**
  * Analyze the full interview transcript and generate scores + feedback
@@ -87,16 +93,20 @@ Scoring rubric:
 - problemSolving: Ability to break down and reason through problems
 - clarity: How well ideas were explained and organized`;
 
-  const completion = await openai.chat.completions.create({
-    model: 'gpt-4o-mini',
-    messages: [{ role: 'user', content: prompt }],
-    max_tokens: 800,
-    temperature: 0.3,
-    response_format: { type: 'json_object' },
+  const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+
+  const result = await model.generateContent({
+    contents: [{ role: "user", parts: [{ text: prompt }] }],
+    generationConfig: { maxOutputTokens: 800, temperature: 0.3 },
   });
 
-  const raw = completion.choices[0].message.content.trim();
-  return JSON.parse(raw);
+  const raw = result.response.text().trim();
+  // Ensure we parse the first JSON object found.
+  const firstJsonStart = raw.indexOf("{");
+  const firstJsonEnd = raw.lastIndexOf("}");
+  const jsonStr = firstJsonStart >= 0 && firstJsonEnd >= 0 ? raw.slice(firstJsonStart, firstJsonEnd + 1) : raw;
+  return JSON.parse(jsonStr);
 };
+
 
 module.exports = { getNextInterviewMessage, analyzeInterview };
