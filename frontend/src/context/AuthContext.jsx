@@ -1,65 +1,76 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import api from "../api/axios";
+import { getUserRole } from "../utils/formatters";
 
 const AuthContext = createContext();
+
+const normalizeUser = (user) => {
+  if (!user) return null;
+  const role = getUserRole(user);
+  return { ...user, role };
+};
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  // Restore session on mount
+  const persistUser = (userData) => {
+    const normalized = normalizeUser(userData);
+    localStorage.setItem("aiUser", JSON.stringify(normalized));
+    setUser(normalized);
+    return normalized;
+  };
+
   useEffect(() => {
-    const token = localStorage.getItem("token");
-    const stored = localStorage.getItem("aiUser");
-    if (token && stored) {
-      try {
-        setUser(JSON.parse(stored));
-      } catch {
-        localStorage.removeItem("aiUser");
+    const restoreSession = async () => {
+      const token = localStorage.getItem("token");
+      if (!token) {
+        setLoading(false);
+        return;
       }
-    }
-    setLoading(false);
+
+      try {
+        const { data } = await api.get("/auth/me");
+        persistUser(data.user);
+      } catch {
+        localStorage.removeItem("token");
+        localStorage.removeItem("aiUser");
+        setUser(null);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    restoreSession();
   }, []);
 
-  // Register — calls POST /api/auth/register
   const signup = async ({ name, email, password, role }) => {
-    const { data } = await api.post("/auth/register", { name, email, password });
-    const userData = { ...data.user, role: role || "frontend" };
+    const { data } = await api.post("/auth/register", { name, email, password, role });
     localStorage.setItem("token", data.token);
-    localStorage.setItem("aiUser", JSON.stringify(userData));
-    setUser(userData);
+    persistUser({ ...data.user, role: role || data.user.targetRole || "frontend" });
     return { success: true };
   };
 
-  // Login — calls POST /api/auth/login
   const login = async (email, password) => {
     const { data } = await api.post("/auth/login", { email, password });
-    const userData = { ...data.user };
-    // Preserve role from any previous signup data if available
-    const stored = localStorage.getItem("aiUser");
-    if (stored) {
-      try {
-        const prev = JSON.parse(stored);
-        if (prev.email === data.user.email && prev.role) {
-          userData.role = prev.role;
-        }
-      } catch { /* ignore */ }
-    }
     localStorage.setItem("token", data.token);
-    localStorage.setItem("aiUser", JSON.stringify(userData));
-    setUser(userData);
+    persistUser(data.user);
     return { success: true };
   };
 
-  // Logout
   const logout = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("aiUser");
     setUser(null);
   };
 
+  const refreshUser = async () => {
+    const { data } = await api.get("/auth/me");
+    return persistUser(data.user);
+  };
+
   return (
-    <AuthContext.Provider value={{ user, loading, login, signup, logout }}>
+    <AuthContext.Provider value={{ user, loading, login, signup, logout, refreshUser }}>
       {children}
     </AuthContext.Provider>
   );
