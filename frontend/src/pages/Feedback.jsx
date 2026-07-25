@@ -1,211 +1,144 @@
-import DashboardLayout from "../layouts/DashboardLayout";
-
-const strengths = [
-  "Strong React fundamentals",
-  "Clear communication",
-  "Good problem-solving approach",
-  "Confident speaking tone",
-];
-
-const improvements = [
-  "Reduce filler words",
-  "Explain optimization deeper",
-  "Improve system design explanations",
-  "Structure answers more concisely",
-];
+import { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import { Loader2, ArrowLeft } from "lucide-react";
+import { getInterview } from "../services/interviewService";
+import { areaLabel, scoreToGrade } from "../utils/formatters";
 
 const Feedback = () => {
-  return (
-    <DashboardLayout>
+  const { interviewId } = useParams();
+  const navigate = useNavigate();
+  const [loading, setLoading] = useState(true);
+  const [interview, setInterview] = useState(null);
+  const [error, setError] = useState("");
 
-      {/* Header */}
-      <div className="mb-14">
+  useEffect(() => {
+    if (!interviewId) return;
+    getInterview(interviewId)
+      .then(setInterview)
+      .catch(() => setError("Could not load interview feedback."))
+      .finally(() => setLoading(false));
+  }, [interviewId]);
 
-        <p className="text-cyan-400 text-lg mb-4">
-          AI Interview Results
-        </p>
-
-        <h1 className="text-6xl font-black mb-6">
-          Interview Feedback
-        </h1>
-
-        <p className="text-xl text-gray-400">
-          Detailed AI-generated performance analysis.
-        </p>
+  if (loading) {
+    return (
+      <div className="p-10 flex justify-center">
+        <Loader2 className="animate-spin text-cyan-400" size={36} />
       </div>
+    );
+  }
 
-      {/* Top Grid */}
+  if (error || !interview) {
+    return (
+      <div className="p-10 text-center">
+        <p className="text-red-400 mb-4">{error || "Interview not found"}</p>
+        <button type="button" onClick={() => navigate("/dashboard")} className="text-cyan-400">
+          Back to dashboard
+        </button>
+      </div>
+    );
+  }
+
+  const breakdown = interview.scoreBreakdown || {};
+  const feedback = interview.feedback || {};
+  const overall = interview.overallScore ?? 0;
+
+  const metrics = [
+    { title: "Confidence", value: breakdown.confidence },
+    { title: "Clarity", value: breakdown.clarity },
+    { title: "Technical", value: breakdown.technicalKnowledge },
+    { title: "Problem solving", value: breakdown.problemSolving },
+  ].filter((m) => m.value != null);
+
+  return (
+    <div className="p-6 lg:p-10 text-white">
+      <button
+        type="button"
+        onClick={() => navigate("/dashboard")}
+        className="flex items-center gap-2 text-gray-400 hover:text-white mb-8"
+      >
+        <ArrowLeft size={18} /> Dashboard
+      </button>
+
+      <p className="text-cyan-400 mb-2">AI interview results</p>
+      <h1 className="text-4xl lg:text-5xl font-black mb-2">{interview.topic}</h1>
+      <p className="text-gray-400 mb-10 capitalize">
+        {interview.type} · {interview.difficulty}
+      </p>
+
       <div className="grid xl:grid-cols-3 gap-8 mb-10">
-
-        {/* Score */}
-        <div className="xl:col-span-2 glass rounded-[40px] p-10 border border-white/10 relative overflow-hidden">
-
-          {/* Glow */}
-          <div className="absolute top-0 right-0 w-80 h-80 bg-purple-500/10 blur-[140px]" />
-
-          <div className="relative z-10">
-
-            <p className="text-gray-400 text-xl mb-6">
-              Overall Performance
-            </p>
-
-            <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-10">
-
-              <div>
-                <h1 className="text-[140px] leading-none font-black gradient-text">
-                  92%
-                </h1>
-
-                <p className="text-2xl text-gray-300 mt-4">
-                  Excellent Performance
-                </p>
-              </div>
-
-              {/* Circle */}
-              <div className="flex justify-center">
-                <div className="w-72 h-72 rounded-full border-[14px] border-cyan-400 flex items-center justify-center shadow-glow">
-
-                  <div className="text-center">
-                    <h2 className="text-7xl font-black">
-                      A+
-                    </h2>
-
-                    <p className="text-gray-400 mt-3">
-                      AI Rating
-                    </p>
-                  </div>
-
-                </div>
-              </div>
+        <div className="xl:col-span-2 rounded-[32px] border border-white/10 bg-white/[0.04] p-8">
+          <p className="text-gray-400 mb-4">Overall performance</p>
+          <div className="flex flex-wrap items-end gap-8">
+            <h2 className="text-8xl font-black bg-gradient-to-r from-cyan-400 to-purple-500 bg-clip-text text-transparent">
+              {overall}%
+            </h2>
+            <div className="text-center">
+              <p className="text-5xl font-black">{scoreToGrade(overall)}</p>
+              <p className="text-gray-500">AI rating</p>
             </div>
           </div>
         </div>
 
-        {/* Metrics */}
-        <div className="space-y-6">
-
-          {[
-            {
-              title: "Confidence",
-              value: "89%",
-            },
-
-            {
-              title: "Clarity",
-              value: "91%",
-            },
-
-            {
-              title: "Technical Accuracy",
-              value: "95%",
-            },
-
-            {
-              title: "Problem Solving",
-              value: "93%",
-            },
-          ].map((item, index) => (
-            <div
-              key={index}
-              className="glass rounded-[32px] p-8 border border-white/10"
-            >
-
-              <p className="text-gray-400 mb-4">
-                {item.title}
-              </p>
-
-              <h2 className="text-5xl font-black gradient-text">
-                {item.value}
-              </h2>
-
+        <div className="space-y-4">
+          {metrics.map((item) => (
+            <div key={item.title} className="rounded-2xl border border-white/10 bg-white/[0.03] p-5">
+              <p className="text-gray-400 text-sm">{item.title}</p>
+              <p className="text-3xl font-black">{item.value}%</p>
             </div>
           ))}
-
         </div>
       </div>
 
-      {/* Bottom Grid */}
-      <div className="grid xl:grid-cols-2 gap-8">
-
-        {/* Strengths */}
-        <div className="glass rounded-[40px] p-10 border border-white/10">
-
-          <h2 className="text-4xl font-black mb-10">
-            Strengths
-          </h2>
-
-          <div className="space-y-5">
-
-            {strengths.map((item, index) => (
-              <div
-                key={index}
-                className="glass rounded-2xl p-5 border border-emerald-500/20 bg-emerald-500/5"
-              >
-
-                <div className="flex items-center gap-4">
-
-                  <div className="w-4 h-4 rounded-full bg-emerald-400" />
-
-                  <p className="text-lg text-gray-300">
-                    {item}
-                  </p>
-
-                </div>
-              </div>
+      <div className="grid xl:grid-cols-2 gap-8 mb-10">
+        <div className="rounded-[32px] border border-white/10 p-8">
+          <h2 className="text-2xl font-black mb-6">Strengths</h2>
+          <ul className="space-y-3">
+            {(feedback.strengths || []).map((s, i) => (
+              <li key={i} className="rounded-xl border border-emerald-500/20 bg-emerald-500/5 px-4 py-3 text-gray-300">
+                {s}
+              </li>
             ))}
-
-          </div>
+          </ul>
         </div>
-
-        {/* Improvements */}
-        <div className="glass rounded-[40px] p-10 border border-white/10">
-
-          <h2 className="text-4xl font-black mb-10">
-            Improvements
-          </h2>
-
-          <div className="space-y-5">
-
-            {improvements.map((item, index) => (
-              <div
-                key={index}
-                className="glass rounded-2xl p-5 border border-red-500/20 bg-red-500/5"
-              >
-
-                <div className="flex items-center gap-4">
-
-                  <div className="w-4 h-4 rounded-full bg-red-400" />
-
-                  <p className="text-lg text-gray-300">
-                    {item}
-                  </p>
-
-                </div>
-              </div>
+        <div className="rounded-[32px] border border-white/10 p-8">
+          <h2 className="text-2xl font-black mb-6">Improvements</h2>
+          <ul className="space-y-3">
+            {(feedback.improvements || feedback.weaknesses || []).map((s, i) => (
+              <li key={i} className="rounded-xl border border-red-500/20 bg-red-500/5 px-4 py-3 text-gray-300">
+                {s}
+              </li>
             ))}
-
-          </div>
+          </ul>
         </div>
       </div>
 
-      {/* AI Summary */}
-      <div className="mt-10 rounded-[40px] p-10 border border-cyan-500/20 bg-cyan-500/10">
+      {feedback.summary && (
+        <div className="rounded-[32px] border border-cyan-500/20 bg-cyan-500/10 p-8">
+          <h2 className="text-2xl font-black mb-4">AI summary</h2>
+          <p className="text-gray-300 leading-relaxed">{feedback.summary}</p>
+          {feedback.detailedAnalysis && (
+            <p className="text-gray-400 mt-4 leading-relaxed">{feedback.detailedAnalysis}</p>
+          )}
+        </div>
+      )}
 
-        <h2 className="text-4xl font-black mb-8">
-          AI Summary
-        </h2>
-
-        <p className="text-xl text-gray-300 leading-relaxed">
-          You performed exceptionally well in technical
-          problem solving and React fundamentals.
-          Communication clarity was strong and your
-          confidence remained consistent throughout the interview.
-          Focus on deeper optimization explanations and
-          structured answers to achieve even higher scores.
-        </p>
-
+      <div className="mt-8 flex gap-4">
+        <button
+          type="button"
+          onClick={() => navigate("/dashboard/interview")}
+          className="h-12 px-6 rounded-xl bg-gradient-to-r from-cyan-400 to-purple-500 text-black font-bold"
+        >
+          Practice again
+        </button>
+        <button
+          type="button"
+          onClick={() => navigate("/dashboard/analytics")}
+          className="h-12 px-6 rounded-xl border border-white/10"
+        >
+          View analytics
+        </button>
       </div>
-    </DashboardLayout>
+    </div>
   );
 };
 

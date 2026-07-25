@@ -1,5 +1,9 @@
+const multer = require('multer');
+
 const errorHandler = (err, req, res, next) => {
-  // Mongoose duplicate key error
+  if (err instanceof multer.MulterError || err.message?.includes('Only PDF')) {
+    return res.status(400).json({ success: false, message: err.message });
+  }
   if (err.code === 11000) {
     const field = Object.keys(err.keyValue)[0];
     return res.status(409).json({ success: false, message: `${field} already exists` });

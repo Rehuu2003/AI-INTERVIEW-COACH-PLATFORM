@@ -12,7 +12,9 @@ const authRoutes = require('./routes/authRoutes');
 const interviewRoutes = require('./routes/interviewRoutes');
 const analyticsRoutes = require('./routes/analyticsRoutes');
 const profileRoutes = require('./routes/profileRoutes');
+const resumeRoutes = require('./routes/resumeRoutes');
 const { errorHandler } = require('./middleware/errorHandler');
+const { requireDB } = require('./config/db');
 
 // Connect to MongoDB
 connectDB();
@@ -52,11 +54,12 @@ app.get('/api/health', (req, res) => {
   res.json({ success: true, message: 'Server is running', timestamp: new Date().toISOString() });
 });
 
-// Routes
-app.use('/api/auth', authRoutes);
-app.use('/api/interviews', interviewRoutes);
-app.use('/api/analytics', analyticsRoutes);
-app.use('/api/profile', profileRoutes);
+// Routes (require MongoDB for data operations)
+app.use('/api/auth', requireDB, authRoutes);
+app.use('/api/interviews', requireDB, interviewRoutes);
+app.use('/api/analytics', requireDB, analyticsRoutes);
+app.use('/api/profile', requireDB, profileRoutes);
+app.use('/api/resume', requireDB, resumeRoutes);
 
 // 404
 app.use((req, res) => {

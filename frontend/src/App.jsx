@@ -16,6 +16,7 @@ import Interview from "./pages/Interview";
 import Analytics from "./pages/Analytics";
 import Settings from "./pages/Settings";
 import ResumeAnalyzer from "./pages/ResumeAnalyzer";
+import Feedback from "./pages/Feedback";
 
 import { useAuth } from "./context/AuthContext";
 
@@ -61,6 +62,7 @@ function App() {
           <Route path="analytics" element={<Analytics />} />
           <Route path="resume" element={<ResumeAnalyzer />} />
           <Route path="settings" element={<Settings />} />
+          <Route path="feedback/:interviewId" element={<Feedback />} />
         </Route>
 
         <Route path="*" element={<Navigate to="/" replace />} />

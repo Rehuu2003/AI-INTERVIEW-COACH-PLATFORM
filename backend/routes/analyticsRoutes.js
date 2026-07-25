@@ -1,4 +1,5 @@
 const express = require('express');
+const mongoose = require('mongoose');
 const { authenticateToken } = require('../middleware/authMiddleware');
 const Interview = require('../models/Interview');
 
@@ -18,7 +19,7 @@ router.get('/summary', authenticateToken, async (req, res, next) => {
 
     // Average scores across all completed interviews
     const scoreAgg = await Interview.aggregate([
-      { $match: { user: require('mongoose').Types.ObjectId.createFromHexString(userId), status: 'completed' } },
+      { $match: { user: new mongoose.Types.ObjectId(String(userId)), status: 'completed' } },
       {
         $group: {
           _id: null,
@@ -140,7 +141,7 @@ router.get('/by-topic', authenticateToken, async (req, res, next) => {
     const agg = await Interview.aggregate([
       {
         $match: {
-          user: require('mongoose').Types.ObjectId.createFromHexString(userId),
+          user: new mongoose.Types.ObjectId(String(userId)),
           status: 'completed',
         },
       },

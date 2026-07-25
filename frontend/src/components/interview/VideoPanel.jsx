@@ -14,7 +14,7 @@ import {
 
 import { motion } from "framer-motion";
 
-const VideoPanel = () => {
+const VideoPanel = ({ liveStats = false }) => {
   const videoRef = useRef(null);
 
   const [cameraOn, setCameraOn] =
@@ -74,7 +74,7 @@ const VideoPanel = () => {
               </h3>
 
               <p className="text-sm text-gray-400">
-                Real-time interview tracking
+                Optional camera preview (local only)
               </p>
             </div>
           </div>
@@ -110,24 +110,8 @@ const VideoPanel = () => {
 
           <div className="absolute top-4 left-4 flex items-center gap-3">
             
-            <div className="px-3 py-1 rounded-full bg-black/40 backdrop-blur-xl border border-white/10 text-white text-xs flex items-center gap-2">
-              
-              <ScanEye
-                size={14}
-                className="text-cyan-400"
-              />
-
-              Face Tracking
-            </div>
-
-            <div className="px-3 py-1 rounded-full bg-black/40 backdrop-blur-xl border border-white/10 text-white text-xs flex items-center gap-2">
-              
-              <Activity
-                size={14}
-                className="text-purple-400"
-              />
-
-              Confidence Detection
+            <div className="px-3 py-1 rounded-full bg-black/40 backdrop-blur-xl border border-white/10 text-white text-xs">
+              Preview
             </div>
           </div>
 
@@ -165,136 +149,12 @@ const VideoPanel = () => {
 
         
 
-        {/* AI ANALYTICS */}
-
-<div className="mt-5 space-y-4">
-  
-  {[
-    {
-      label:
-        "Eye Contact",
-      value: "94%",
-      color:
-        "from-cyan-400 to-blue-500",
-    },
-
-    {
-      label:
-        "Confidence",
-      value: "91%",
-      color:
-        "from-purple-400 to-pink-500",
-    },
-
-    {
-      label:
-        "Communication Energy",
-      value: "96%",
-      color:
-        "from-green-400 to-emerald-500",
-    },
-
-    {
-      label:
-        "Facial Engagement",
-      value: "89%",
-      color:
-        "from-orange-400 to-red-500",
-    },
-  ].map((item, index) => (
-    <motion.div
-      key={index}
-      initial={{
-        opacity: 0,
-        x: 20,
-      }}
-      animate={{
-        opacity: 1,
-        x: 0,
-      }}
-      transition={{
-        delay:
-          index * 0.1,
-      }}
-      className="rounded-2xl border border-white/10 bg-white/[0.03] p-4"
-    >
-      
-      <div className="flex items-center justify-between mb-3">
-        
-        <p className="text-sm text-gray-300">
-          {item.label}
-        </p>
-
-        <p className="font-bold text-white">
-          {item.value}
-        </p>
-      </div>
-
-      <div className="h-3 rounded-full bg-white/5 overflow-hidden">
-        
-        <motion.div
-          initial={{
-            width: 0,
-          }}
-          animate={{
-            width:
-              item.value,
-          }}
-          transition={{
-            duration: 1,
-          }}
-          className={`h-full rounded-full bg-gradient-to-r ${item.color}`}
-        />
-      </div>
-    </motion.div>
-  ))}
-</div>
-
-<div className="mt-5 rounded-2xl border border-white/10 bg-white/[0.03] p-5">
-  
-  <div className="flex items-center justify-between mb-5">
-    
-    <h3 className="text-lg font-bold">
-      Live AI Observations
-    </h3>
-
-    <div className="px-3 py-1 rounded-full bg-cyan-400/10 border border-cyan-400/20 text-cyan-300 text-xs font-semibold">
-      REAL-TIME
-    </div>
-  </div>
-
-  <div className="space-y-3">
-    
-    {[
-      "Maintaining excellent eye contact with interviewer.",
-
-      "Voice clarity and confidence level are strong.",
-
-      "Communication pace is recruiter-friendly.",
-
-      "Technical explanations are structured well.",
-    ].map((item, index) => (
-      <motion.div
-        key={index}
-        initial={{
-          opacity: 0,
-          y: 10,
-        }}
-        animate={{
-          opacity: 1,
-          y: 0,
-        }}
-        transition={{
-          delay:
-            index * 0.15,
-        }}
-        className="rounded-xl border border-white/5 bg-black/20 px-4 py-3 text-sm text-gray-300"
-      >
-        {item}
-      </motion.div>
-    ))}
-  </div>
-</div>
+        {liveStats ? (
+          <div className="mt-5 rounded-2xl border border-white/10 bg-white/[0.03] p-5 text-sm text-gray-400 leading-relaxed">
+            <p className="font-semibold text-white mb-2">About this panel</p>
+            Your answers are scored on the server when you end the session. The camera stays on your device and is not sent for automated facial analysis.
+          </div>
+        ) : null}
 
         {/* AI NOTICE */}
 
@@ -315,10 +175,7 @@ const VideoPanel = () => {
             </h4>
 
             <p className="text-gray-400 leading-relaxed text-sm">
-              AI monitors confidence, eye contact,
-              communication clarity, and speaking
-              patterns to simulate enterprise-level
-              interview evaluation systems.
+              Use voice mode or text to practice. End the session to receive AI feedback from your transcript.
             </p>
           </div>
         </div>

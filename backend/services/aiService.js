@@ -101,12 +101,77 @@ Scoring rubric:
   });
 
   const raw = result.response.text().trim();
-  // Ensure we parse the first JSON object found.
+  const firstJsonStart = raw.indexOf("{");
+  const firstJsonEnd = raw.lastIndexOf("}");
+  const jsonStr = firstJsonStart >= 0 && firstJsonEnd >= 0 ? raw.slice(firstJsonStart, firstJsonEnd + 1) : raw;
+  try {
+    return JSON.parse(jsonStr);
+  } catch {
+    return {
+      overallScore: 70,
+      scoreBreakdown: {
+        technicalKnowledge: 70,
+        communication: 70,
+        confidence: 70,
+        problemSolving: 70,
+        clarity: 70,
+      },
+      feedback: {
+        summary: "Interview completed. Enable GEMINI_API_KEY for detailed AI scoring.",
+        strengths: ["Completed the full session"],
+        weaknesses: ["Detailed analysis unavailable"],
+        improvements: ["Retry after configuring the AI service"],
+        detailedAnalysis: raw.slice(0, 500),
+      },
+    };
+  }
+};
+
+const parseResumeJson = (raw) => {
   const firstJsonStart = raw.indexOf("{");
   const firstJsonEnd = raw.lastIndexOf("}");
   const jsonStr = firstJsonStart >= 0 && firstJsonEnd >= 0 ? raw.slice(firstJsonStart, firstJsonEnd + 1) : raw;
   return JSON.parse(jsonStr);
 };
 
+/**
+ * Analyze resume file (PDF/DOCX) via Gemini multimodal
+ */
+const analyzeResumeDocument = async (buffer, mimeType, fileName, targetRole = "") => {
+  const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+  const base64 = buffer.toString("base64");
 
-module.exports = { getNextInterviewMessage, analyzeInterview };
+  const prompt = `You are an expert ATS resume analyzer and technical recruiter.
+
+Analyze this resume${targetRole ? ` for a ${targetRole} role` : ""}.
+
+Return ONLY valid JSON:
+{
+  "atsScore": "<0-100>%",
+  "technicalScore": "<0-100>%",
+  "hiringScore": "<0-100>%",
+  "strengths": "<2-3 sentence paragraph>",
+  "improvements": "<2-3 sentence paragraph>",
+  "missingSkills": "<2-3 sentence paragraph on skill gaps and keywords>"
+}
+
+File name: ${fileName}`;
+
+  const result = await model.generateContent({
+    contents: [
+      {
+        role: "user",
+        parts: [
+          { inlineData: { mimeType, data: base64 } },
+          { text: prompt },
+        ],
+      },
+    ],
+    generationConfig: { maxOutputTokens: 900, temperature: 0.3 },
+  });
+
+  const raw = result.response.text().trim();
+  return parseResumeJson(raw);
+};
+
+module.exports = { getNextInterviewMessage, analyzeInterview, analyzeResumeDocument };
