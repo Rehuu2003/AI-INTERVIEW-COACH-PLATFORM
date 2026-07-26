@@ -37,7 +37,7 @@ const Hero = () => {
             </h1>
 
             <p className="text-lg text-zinc-400 leading-relaxed max-w-lg mb-10">
-              Practice with a real-time AI interviewer, get scored on communication, confidence, and technical depth — then track your progress over time.
+              Practice with an AI interviewer, receive coaching after each submitted answer, and track scores from completed sessions.
             </p>
 
             {/* CTAs */}
@@ -57,9 +57,9 @@ const Hero = () => {
             {/* Stats row */}
             <div className="flex flex-wrap gap-8 pt-8 border-t border-white/[0.06]">
               {[
-                { value: "50K+", label: "Interviews" },
-                { value: "95%", label: "Success rate" },
-                { value: "24/7", label: "AI availability" },
+                { value: "Text", label: "Answer input" },
+                { value: "Voice", label: "Supported browsers" },
+                { value: "Private", label: "Local camera preview" },
               ].map((s, i) => (
                 <div key={i}>
                   <p className="text-2xl font-bold text-white">{s.value}</p>
@@ -95,14 +95,14 @@ const Hero = () => {
                 {/* Score header */}
                 <div className="flex items-end justify-between mb-6">
                   <div>
-                    <p className="text-xs text-zinc-500 mb-1 font-medium uppercase tracking-wider">Overall Score</p>
-                    <p className="text-6xl font-black text-white leading-none">94<span className="text-3xl text-zinc-500">%</span></p>
+                    <p className="text-xs text-zinc-500 mb-1 font-medium uppercase tracking-wider">Answer coaching</p>
+                    <p className="text-3xl font-black text-white leading-none">Scores after each answer</p>
                   </div>
                   <div className="text-right">
                     <div className="flex items-center gap-1 justify-end text-emerald-400 text-sm font-semibold mb-1">
-                      <TrendingUp size={14} /> +28%
+                      <TrendingUp size={14} /> Saved progress
                     </div>
-                    <p className="text-xs text-zinc-500">vs last session</p>
+                    <p className="text-xs text-zinc-500">after you complete a session</p>
                   </div>
                 </div>
 
@@ -138,9 +138,9 @@ const Hero = () => {
                 {/* Metrics */}
                 <div className="grid grid-cols-3 gap-3 mb-5">
                   {[
-                    { label: "Communication", val: "94%", icon: MessageSquare },
-                    { label: "Technical", val: "91%", icon: Zap },
-                    { label: "Confidence", val: "89%", icon: BarChart2 },
+                    { label: "Communication", val: "AI scored", icon: MessageSquare },
+                    { label: "Technical", val: "AI scored", icon: Zap },
+                    { label: "Confidence", val: "AI scored", icon: BarChart2 },
                   ].map((m, i) => {
                     const Icon = m.icon;
                     return (
@@ -159,7 +159,7 @@ const Hero = () => {
                 <div className="rounded-xl bg-violet-600/10 border border-violet-500/20 px-4 py-3">
                   <p className="text-xs text-zinc-400 mb-1 font-medium">AI Feedback</p>
                   <p className="text-sm text-zinc-300 leading-relaxed">
-                    Strong technical explanations. Focus on structuring answers using STAR method for behavioral questions.
+                    Feedback is generated from the answer you submit, with an actionable improvement for your next response.
                   </p>
                 </div>
               </div>

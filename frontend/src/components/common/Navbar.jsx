@@ -31,12 +31,7 @@ const Navbar = () => {
     else navigate("/");
   };
 
-  const links = [
-    { label: "Features", id: "features" },
-    { label: "Analytics", id: "analytics" },
-    { label: "Testimonials", id: "testimonials" },
-    { label: "Pricing", id: "pricing" },
-  ];
+  const links = [{ label: "Features", id: "features" }];
 
   return (
     <>

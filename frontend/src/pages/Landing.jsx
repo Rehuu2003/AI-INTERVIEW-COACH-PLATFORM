@@ -1,11 +1,7 @@
 import Navbar from "../components/common/Navbar";
 
 import Hero from "../components/landing/Hero";
-import Companies from "../components/landing/Companies";
 import Features from "../components/landing/Features";
-import Analytics from "../components/landing/Analytics";
-import Testimonials from "../components/landing/Testimonials";
-import Pricing from "../components/landing/Pricing";
 
 import Footer from "../components/common/Footer";
 
@@ -30,23 +26,10 @@ const Landing = () => {
 
       <Hero />
 
-      <Companies />
-
       <section id="features">
         <Features />
       </section>
 
-      <section id="analytics">
-        <Analytics />
-      </section>
-
-      <section id="testimonials">
-        <Testimonials />
-      </section>
-
-      <section id="pricing">
-        <Pricing />
-      </section>
 
         <Footer />
       </div>

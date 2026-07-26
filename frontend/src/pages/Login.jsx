@@ -69,10 +69,10 @@ const Login = () => {
           </div>
           <div className="relative z-10 grid grid-cols-2 gap-4">
             {[
-              { title: "50K+", text: "Mock interviews completed" },
-              { title: "92%", text: "Confidence improvement rate" },
-              { title: "Real-time", text: "Speech & tone analysis" },
-              { title: "AI-Driven", text: "Personalized coaching" },
+              { title: "AI", text: "Role-focused interview questions" },
+              { title: "Scores", text: "Feedback from your submitted answers" },
+              { title: "Voice", text: "Browser speech input when supported" },
+              { title: "History", text: "Your completed sessions and reports" },
             ].map((item, i) => (
               <div key={i} className="rounded-2xl bg-white/5 border border-white/5 p-5">
                 <h3 className="text-2xl font-bold mb-2">{item.title}</h3>

@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import { useAuth } from "../context/AuthContext";
 import api from "../api/axios";
 import {
-  User, Shield, Brain, Save, Loader2, CheckCircle2, AlertCircle,
+  User, Shield, Save, Loader2, CheckCircle2, AlertCircle,
 } from "lucide-react";
 
 const Settings = () => {
@@ -17,7 +17,6 @@ const Settings = () => {
   const tabs = [
     { id: "profile", label: "Profile", icon: User },
     { id: "security", label: "Security", icon: Shield },
-    { id: "ai", label: "AI Preferences", icon: Brain },
   ];
 
   return (
@@ -79,7 +78,6 @@ const Settings = () => {
         <div>
           {activeTab === "profile" && <ProfileTab user={user} updateProfile={updateProfile} />}
           {activeTab === "security" && <SecurityTab logout={logout} deleteAccount={deleteAccount} />}
-          {activeTab === "ai" && <AITab />}
         </div>
       </div>
     </div>
@@ -190,6 +188,7 @@ const SecurityTab = ({ logout, deleteAccount }) => {
     error: { type: "error", text: "Current password is incorrect." },
     mismatch: { type: "error", text: "New passwords don't match." },
     short: { type: "error", text: "Password must be at least 6 characters." },
+    "delete-error": { type: "error", text: "Could not delete the account. Please try again." },
   };
 
   return (

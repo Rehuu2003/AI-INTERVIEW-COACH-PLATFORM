@@ -5,14 +5,14 @@ const features = [
   {
     icon: Brain,
     label: "AI Intelligence",
-    title: "Real-time interview analysis",
-    description: "GPT-4 powered AI evaluates your technical depth, communication clarity, and confidence as you answer — giving you instant, actionable scores.",
+    title: "AI interview coaching",
+    description: "The server generates role-focused questions and evaluates each submitted answer for technical depth, communication, and confidence.",
   },
   {
     icon: Mic,
-    label: "Voice Engine",
-    title: "Speech & tone analysis",
-    description: "Our voice engine analyses speaking pace, filler words, tone, and delivery. Understand how you sound — not just what you say.",
+    label: "Voice input",
+    title: "Browser speech recognition",
+    description: "In supported browsers, you can dictate answers with the Web Speech API. The transcript is sent as your answer for coaching.",
   },
   {
     icon: BarChart3,
@@ -23,9 +23,9 @@ const features = [
 ];
 
 const extras = [
-  { icon: Sparkles, label: "Real-time AI feedback after every answer" },
-  { icon: ShieldCheck, label: "Industry-level questions across 10+ roles" },
-  { icon: Clock3, label: "Practice anytime — AI available 24/7" },
+  { icon: Sparkles, label: "Coaching returned after every submitted answer" },
+  { icon: ShieldCheck, label: "Authenticated sessions and account-owned history" },
+  { icon: Clock3, label: "Resume analysis for PDF and DOCX files" },
 ];
 
 const Features = () => {

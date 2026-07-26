@@ -95,7 +95,7 @@ const ResumeUpload = ({
         <p className="text-gray-400 max-w-2xl mx-auto leading-relaxed">
           Upload your resume and let AI analyze
           your ATS score, technical skills,
-          missing keywords, communication quality,
+          missing keywords,
           and hiring potential.
         </p>
 
