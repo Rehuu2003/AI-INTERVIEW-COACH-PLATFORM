@@ -1,6 +1,5 @@
 import { Zap, ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
-import { FaTwitter, FaGithub, FaLinkedin } from "react-icons/fa";
 
 const Footer = () => {
   return (
@@ -16,7 +15,7 @@ const Footer = () => {
                 Ready to ace your next interview?
               </h2>
               <p className="text-violet-200 text-[15px]">
-                Join thousands of candidates who already use InterviewIQ.
+                Create an account to start a role-focused practice session.
               </p>
             </div>
             <Link to="/signup" className="shrink-0">
@@ -37,37 +36,23 @@ const Footer = () => {
               <span className="text-sm font-semibold text-white">InterviewIQ</span>
             </Link>
             <p className="text-zinc-500 text-sm leading-relaxed max-w-xs">
-              AI-powered mock interviews, real-time analytics, and communication feedback for modern hiring.
+              AI-assisted interview practice, answer feedback, resume analysis, and progress tracking.
             </p>
           </div>
 
-          {[
-            { heading: "Product", links: ["Features", "Analytics", "Pricing", "AI Feedback", "Mock Interviews"] },
-            { heading: "Company", links: ["About", "Blog", "Careers", "Contact", "Privacy Policy"] },
-            { heading: "Support", links: ["Documentation", "Community", "Status", "Changelog"] },
-          ].map((col, i) => (
-            <div key={i}>
-              <p className="text-xs font-semibold text-zinc-400 uppercase tracking-wider mb-4">{col.heading}</p>
-              <div className="space-y-3">
-                {col.links.map((l, j) => (
-                  <a key={j} href="#" className="block text-sm text-zinc-500 hover:text-zinc-200 transition-colors">{l}</a>
-                ))}
-              </div>
+          <div>
+            <p className="text-xs font-semibold text-zinc-400 uppercase tracking-wider mb-4">Product</p>
+            <div className="space-y-3">
+              <Link to="/signup" className="block text-sm text-zinc-500 hover:text-zinc-200">Create account</Link>
+              <Link to="/login" className="block text-sm text-zinc-500 hover:text-zinc-200">Sign in</Link>
             </div>
-          ))}
+          </div>
         </div>
 
         {/* Bottom bar */}
         <div className="flex flex-col md:flex-row items-center justify-between gap-4 pt-8 border-t border-white/[0.06]">
           <p className="text-zinc-600 text-xs">© 2026 InterviewIQ. All rights reserved.</p>
 
-          <div className="flex items-center gap-3">
-            {[FaTwitter, FaGithub, FaLinkedin].map((Icon, i) => (
-              <button key={i} className="w-8 h-8 rounded-lg border border-white/[0.07] bg-white/[0.03] flex items-center justify-center text-zinc-500 hover:text-zinc-200 hover:bg-white/[0.06] transition-all">
-                <Icon size={14} />
-              </button>
-            ))}
-          </div>
         </div>
       </div>
     </footer>

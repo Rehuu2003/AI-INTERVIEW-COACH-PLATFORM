@@ -47,7 +47,7 @@ const AIFeedbackCard = ({
           </div>
 
           <h2 className="text-3xl font-black">
-            Real-Time Feedback
+            Answer Feedback
           </h2>
         </div>
       </div>

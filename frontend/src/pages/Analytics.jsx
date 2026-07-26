@@ -198,7 +198,7 @@ const Analytics = () => {
               </div>
             </div>
             <div className="mt-8">
-              <InterviewReport role={role} averageScore={averageScore || 0} />
+              <InterviewReport averageScore={averageScore} scores={scores} feedback={latestFeedback} />
             </div>
           </motion.div>
         </div>

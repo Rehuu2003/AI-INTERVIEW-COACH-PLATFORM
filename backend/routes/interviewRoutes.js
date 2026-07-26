@@ -83,8 +83,10 @@ router.post('/:id/message',
 
       const lastQuestion = [...interview.messages].reverse().find((message) => message.role === 'assistant')?.content || '';
       interview.messages.push({ role: 'user', content: req.body.message });
-      const answerFeedback = await evaluateAnswer(lastQuestion, req.body.message, interview.topic, interview.type);
-      const aiReply = await getNextInterviewMessage(interview.messages, interview.topic, interview.difficulty, interview.type);
+      const [answerFeedback, aiReply] = await Promise.all([
+        evaluateAnswer(lastQuestion, req.body.message, interview.topic, interview.type),
+        getNextInterviewMessage(interview.messages, interview.topic, interview.difficulty, interview.type),
+      ]);
       interview.messages.push({ role: 'assistant', content: aiReply });
       interview.questionCount = interview.messages.filter((m) => m.role === 'assistant').length;
       await interview.save();

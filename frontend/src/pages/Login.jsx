@@ -63,7 +63,7 @@ const Login = () => {
                 Train smarter.<br />Land your dream role.
               </h2>
               <p className="text-gray-400 text-lg leading-relaxed">
-                Practice with a real-time AI interviewer, get scored on communication, confidence, and technical depth.
+                Submit answers to an AI interviewer and receive server-generated coaching on communication, confidence, and technical depth.
               </p>
             </div>
           </div>
