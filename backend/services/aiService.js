@@ -1,6 +1,15 @@
 const { GoogleGenerativeAI } = require("@google/generative-ai");
 
-const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
+const getModel = () => {
+  if (!process.env.GEMINI_API_KEY) {
+    const error = new Error('AI service is not configured. Set GEMINI_API_KEY in backend .env');
+    error.status = 503;
+    throw error;
+  }
+
+  const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
+  return genAI.getGenerativeModel({ model: process.env.GEMINI_MODEL || 'gemini-1.5-flash' });
+};
 
 
 /**
@@ -36,7 +45,7 @@ Important rules:
 const getNextInterviewMessage = async (messages, topic, difficulty, type) => {
   const systemPrompt = buildSystemPrompt(topic, difficulty, type);
 
-  const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+  const model = getModel();
 
   const parts = [
     { text: systemPrompt },
@@ -93,7 +102,7 @@ Scoring rubric:
 - problemSolving: Ability to break down and reason through problems
 - clarity: How well ideas were explained and organized`;
 
-  const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+  const model = getModel();
 
   const result = await model.generateContent({
     contents: [{ role: "user", parts: [{ text: prompt }] }],
@@ -134,11 +143,42 @@ const parseResumeJson = (raw) => {
   return JSON.parse(jsonStr);
 };
 
+/** Evaluate one submitted answer so the interview UI can give immediate, honest coaching. */
+const evaluateAnswer = async (question, answer, topic, type) => {
+  const model = getModel();
+  const prompt = `You are evaluating one ${type} interview answer for ${topic}.
+
+QUESTION: ${question}
+ANSWER: ${answer}
+
+Return ONLY valid JSON in this exact shape:
+{
+  "technicalScore": <integer 0-100>,
+  "communicationScore": <integer 0-100>,
+  "confidenceScore": <integer 0-100>,
+  "overallScore": <integer 0-100>,
+  "strengths": "<one concise, evidence-based sentence>",
+  "improvements": "<one concise, actionable sentence>"
+}
+Do not invent details not found in the answer.`;
+
+  const result = await model.generateContent({
+    contents: [{ role: 'user', parts: [{ text: prompt }] }],
+    generationConfig: { maxOutputTokens: 250, temperature: 0.2 },
+  });
+  const feedback = parseResumeJson(result.response.text().trim());
+  for (const key of ['technicalScore', 'communicationScore', 'confidenceScore', 'overallScore']) {
+    if (!Number.isFinite(feedback[key])) throw new Error('AI evaluation response was invalid');
+    feedback[key] = Math.max(0, Math.min(100, Math.round(feedback[key])));
+  }
+  return feedback;
+};
+
 /**
  * Analyze resume file (PDF/DOCX) via Gemini multimodal
  */
 const analyzeResumeDocument = async (buffer, mimeType, fileName, targetRole = "") => {
-  const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+  const model = getModel();
   const base64 = buffer.toString("base64");
 
   const prompt = `You are an expert ATS resume analyzer and technical recruiter.
@@ -174,4 +214,4 @@ File name: ${fileName}`;
   return parseResumeJson(raw);
 };
 
-module.exports = { getNextInterviewMessage, analyzeInterview, analyzeResumeDocument };
+module.exports = { getNextInterviewMessage, analyzeInterview, analyzeResumeDocument, evaluateAnswer };

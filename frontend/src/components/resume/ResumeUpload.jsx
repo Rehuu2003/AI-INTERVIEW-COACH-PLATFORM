@@ -20,9 +20,6 @@ const ResumeUpload = ({
       "application/pdf": [
         ".pdf",
       ],
-      "application/msword": [
-        ".doc",
-      ],
       "application/vnd.openxmlformats-officedocument.wordprocessingml.document":
         [".docx"],
     },
@@ -106,10 +103,6 @@ const ResumeUpload = ({
           
           <div className="px-4 py-2 rounded-2xl bg-white/[0.05] border border-white/10 text-sm">
             PDF
-          </div>
-
-          <div className="px-4 py-2 rounded-2xl bg-white/[0.05] border border-white/10 text-sm">
-            DOC
           </div>
 
           <div className="px-4 py-2 rounded-2xl bg-white/[0.05] border border-white/10 text-sm">

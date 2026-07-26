@@ -69,8 +69,18 @@ export const AuthProvider = ({ children }) => {
     return persistUser(data.user);
   };
 
+  const updateProfile = async (changes) => {
+    const { data } = await api.put("/profile", changes);
+    return persistUser(data.data);
+  };
+
+  const deleteAccount = async () => {
+    await api.delete("/profile");
+    logout();
+  };
+
   return (
-    <AuthContext.Provider value={{ user, loading, login, signup, logout, refreshUser }}>
+    <AuthContext.Provider value={{ user, loading, login, signup, logout, refreshUser, updateProfile, deleteAccount }}>
       {children}
     </AuthContext.Provider>
   );

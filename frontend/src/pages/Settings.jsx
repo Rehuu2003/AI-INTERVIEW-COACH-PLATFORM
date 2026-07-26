@@ -8,7 +8,7 @@ import {
 } from "lucide-react";
 
 const Settings = () => {
-  const { user, logout } = useAuth();
+  const { user, logout, updateProfile, deleteAccount } = useAuth();
   const [activeTab, setActiveTab] = useState("profile");
 
   const displayName = user?.name || "User";
@@ -77,8 +77,8 @@ const Settings = () => {
 
         {/* Tab Content */}
         <div>
-          {activeTab === "profile" && <ProfileTab user={user} />}
-          {activeTab === "security" && <SecurityTab logout={logout} />}
+          {activeTab === "profile" && <ProfileTab user={user} updateProfile={updateProfile} />}
+          {activeTab === "security" && <SecurityTab logout={logout} deleteAccount={deleteAccount} />}
           {activeTab === "ai" && <AITab />}
         </div>
       </div>
@@ -87,7 +87,7 @@ const Settings = () => {
 };
 
 /* ─── Profile Tab ───────────────────────────────────────── */
-const ProfileTab = ({ user }) => {
+const ProfileTab = ({ user, updateProfile }) => {
   const [form, setForm] = useState({
     name: user?.name || "",
     bio: user?.bio || "",
@@ -100,9 +100,7 @@ const ProfileTab = ({ user }) => {
     setLoading(true);
     setStatus(null);
     try {
-      await api.put("/profile", form);
-      const stored = JSON.parse(localStorage.getItem("aiUser") || "{}");
-      localStorage.setItem("aiUser", JSON.stringify({ ...stored, ...form }));
+      await updateProfile(form);
       setStatus("success");
     } catch {
       setStatus("error");
@@ -162,11 +160,12 @@ const ProfileTab = ({ user }) => {
 };
 
 /* ─── Security Tab ──────────────────────────────────────── */
-const SecurityTab = ({ logout }) => {
+const SecurityTab = ({ logout, deleteAccount }) => {
   const navigate = useNavigate();
   const [form, setForm] = useState({ currentPassword: "", newPassword: "", confirm: "" });
   const [status, setStatus] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [deleting, setDeleting] = useState(false);
 
   const handleChange = (e) => setForm({ ...form, [e.target.name]: e.target.value });
 
@@ -243,10 +242,22 @@ const SecurityTab = ({ logout }) => {
         <h2 className="text-xl font-bold mb-2 text-red-400">Danger Zone</h2>
         <p className="text-gray-400 text-sm mb-6">Permanently delete your account and all data. This cannot be undone.</p>
         <button
-          onClick={() => { if (window.confirm("Delete your account permanently? This cannot be undone.")) { logout(); } }}
+          onClick={async () => {
+            if (!window.confirm("Delete your account permanently? This cannot be undone.")) return;
+            setDeleting(true);
+            try {
+              await deleteAccount();
+              navigate("/");
+            } catch {
+              setStatus("delete-error");
+            } finally {
+              setDeleting(false);
+            }
+          }}
+          disabled={deleting}
           className="h-12 px-8 rounded-xl border border-red-500/30 bg-red-500/10 hover:bg-red-500/20 text-red-400 font-medium transition text-sm"
         >
-          Delete Account
+          {deleting ? "Deleting…" : "Delete Account"}
         </button>
       </div>
     </motion.div>
@@ -256,19 +267,13 @@ const SecurityTab = ({ logout }) => {
 /* ─── AI Tab ────────────────────────────────────────────── */
 const AITab = () => {
   const [prefs, setPrefs] = useState({
-    realtimeFeedback: true,
-    voiceAnalysis: true,
-    confidenceTracking: true,
-    advancedAnalytics: true,
+    voiceMode: false,
   });
 
   const toggle = (key) => setPrefs((p) => ({ ...p, [key]: !p[key] }));
 
   const items = [
-    { key: "realtimeFeedback", label: "Real-time AI Feedback", desc: "Get instant scoring after each answer" },
-    { key: "voiceAnalysis", label: "Voice Analysis", desc: "Analyse tone and speech patterns" },
-    { key: "confidenceTracking", label: "Confidence Tracking", desc: "Monitor confidence scores across sessions" },
-    { key: "advancedAnalytics", label: "Advanced Analytics", desc: "Detailed breakdown of performance metrics" },
+    { key: "voiceMode", label: "Voice mode", desc: "Use your browser's speech recognition during an interview" },
   ];
 
   return (
@@ -277,7 +282,7 @@ const AITab = () => {
       className="rounded-[28px] border border-white/10 bg-gradient-to-br from-[#081120] to-[#111827] p-8"
     >
       <h2 className="text-2xl font-bold mb-2">AI Preferences</h2>
-      <p className="text-gray-400 text-sm mb-8">Configure your AI interview experience.</p>
+      <p className="text-gray-400 text-sm mb-8">Voice mode is available in supported browsers. Other scoring is based on your submitted interview transcript.</p>
       <div className="space-y-4">
         {items.map((item) => (
           <div key={item.key} className="flex items-center justify-between rounded-xl border border-white/5 bg-white/[0.02] p-5">

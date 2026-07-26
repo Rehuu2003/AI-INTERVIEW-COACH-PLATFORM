@@ -3,7 +3,7 @@ const { body, param, validationResult } = require('express-validator');
 const { authenticateToken } = require('../middleware/authMiddleware');
 const Interview = require('../models/Interview');
 const User = require('../models/User');
-const { getNextInterviewMessage, analyzeInterview } = require('../services/aiService');
+const { getNextInterviewMessage, analyzeInterview, evaluateAnswer } = require('../services/aiService');
 
 const router = express.Router();
 
@@ -81,13 +81,15 @@ router.post('/:id/message',
       if (!interview) return res.status(404).json({ success: false, message: 'Interview not found' });
       if (interview.status !== 'in-progress') return res.status(400).json({ success: false, message: 'Session has ended' });
 
+      const lastQuestion = [...interview.messages].reverse().find((message) => message.role === 'assistant')?.content || '';
       interview.messages.push({ role: 'user', content: req.body.message });
+      const answerFeedback = await evaluateAnswer(lastQuestion, req.body.message, interview.topic, interview.type);
       const aiReply = await getNextInterviewMessage(interview.messages, interview.topic, interview.difficulty, interview.type);
       interview.messages.push({ role: 'assistant', content: aiReply });
       interview.questionCount = interview.messages.filter((m) => m.role === 'assistant').length;
       await interview.save();
 
-      res.json({ success: true, data: { message: aiReply, questionCount: interview.questionCount } });
+      res.json({ success: true, data: { message: aiReply, questionCount: interview.questionCount, answerFeedback } });
     } catch (err) { next(err); }
   }
 );

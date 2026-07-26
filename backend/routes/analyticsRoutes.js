@@ -176,7 +176,7 @@ router.get('/history', authenticateToken, async (req, res, next) => {
     const userId = req.user.id;
 
     const interviews = await Interview.find({ user: userId, status: 'completed' })
-      .select('topic type difficulty overallScore scoreBreakdown completedAt duration questionCount')
+      .select('topic type difficulty overallScore scoreBreakdown feedback completedAt duration questionCount')
       .sort({ completedAt: -1 })
       .limit(Number(limit))
       .skip((Number(page) - 1) * Number(limit));

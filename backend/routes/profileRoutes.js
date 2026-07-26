@@ -3,6 +3,7 @@ const { body, validationResult } = require('express-validator');
 const { authenticateToken } = require('../middleware/authMiddleware');
 const User = require('../models/User');
 const Interview = require('../models/Interview');
+const ResumeAnalysis = require('../models/ResumeAnalysis');
 
 const router = express.Router();
 
@@ -88,6 +89,7 @@ router.get('/stats', authenticateToken, async (req, res, next) => {
 router.delete('/', authenticateToken, async (req, res, next) => {
   try {
     await Interview.deleteMany({ user: req.user.id });
+    await ResumeAnalysis.deleteMany({ user: req.user.id });
     await User.findByIdAndDelete(req.user.id);
     res.json({ success: true, message: 'Account deleted' });
   } catch (err) { next(err); }

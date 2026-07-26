@@ -14,6 +14,7 @@ import {
   Square,
 } from "lucide-react";
 import VideoPanel from "../components/interview/VideoPanel";
+import AIFeedbackCard from "../components/interview/AIFeedbackCard";
 import { useAuth } from "../context/AuthContext";
 import { roleConfig } from "../config/roleConfig";
 import {
@@ -50,6 +51,7 @@ const Interview = () => {
   const [aiSpeaking, setAiSpeaking] = useState(false);
   const [error, setError] = useState("");
   const [completing, setCompleting] = useState(false);
+  const [answerFeedback, setAnswerFeedback] = useState(null);
   const [sessionStats, setSessionStats] = useState({
     completed: 0,
     score: 0,
@@ -153,6 +155,7 @@ const Interview = () => {
     try {
       const data = await sendMessage(interviewId, text.trim());
       setMessages((prev) => [...prev, { sender: "ai", text: data.message }]);
+      setAnswerFeedback(data.answerFeedback || null);
       speakText(data.message);
     } catch (err) {
       setError(err.response?.data?.message || "Failed to send message.");
@@ -356,6 +359,7 @@ const Interview = () => {
                     <span className="text-gray-300">AI is thinking…</span>
                   </div>
                 )}
+                <AIFeedbackCard feedback={answerFeedback} />
                 <div ref={messagesEndRef} />
               </div>
 
